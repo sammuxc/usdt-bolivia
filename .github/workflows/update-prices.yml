@@ -1,0 +1,33 @@
+name: Actualizar precios USDT Bolivia
+
+on:
+  schedule:
+    # Cada hora, todos los días
+    - cron: '0 * * * *'
+  workflow_dispatch: # Permite ejecutar manualmente
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repositorio
+        uses: actions/checkout@v4
+
+      - name: Configurar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Obtener precios USDT
+        run: python fetch_prices.py
+
+      - name: Commit y push de datos actualizados
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/prices.json
+          git diff --staged --quiet || git commit -m "📊 Actualización diaria de precios USDT - $(date -u '+%Y-%m-%d')"
+          git push
