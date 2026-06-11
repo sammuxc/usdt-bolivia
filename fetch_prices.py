@@ -29,7 +29,11 @@ def fetch_binance_p2p(trade_type):
         with urllib.request.urlopen(req, timeout=15) as resp:
             data = json.loads(resp.read())
         prices = [float(ad["adv"]["price"]) for ad in data.get("data", [])[:5]]
-        return round(sum(prices) / len(prices), 2) if prices else None
+        if not prices:
+            return None
+        # Para BUY (compradores): el mejor precio es el MÁS ALTO (más Bs por USDT)
+        # Para SELL (vendedores): el mejor precio es el MÁS BAJO
+        return round(max(prices) if trade_type == "BUY" else min(prices), 2)
     except Exception as e:
         print(f"Binance P2P error ({trade_type}): {e}")
         return None

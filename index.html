@@ -277,6 +277,55 @@
       background: var(--bg3); border-radius: 4px; padding: 4px 10px;
     }
 
+    /* ── USD FISICO vs USDT DIGITAL ── */
+    .comparison-section { margin-bottom: 24px; }
+    .comparison-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 12px;
+    }
+    @media (max-width: 600px) { .comparison-grid { grid-template-columns: 1fr; } }
+    .comparison-card {
+      background: var(--bg2); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 24px;
+      transition: transform .2s, border-color .2s;
+    }
+    .comparison-card:hover { transform: translateY(-2px); }
+    .comparison-card.fisico { border-top: 3px solid var(--blue); }
+    .comparison-card.digital { border-top: 3px solid #a371f7; }
+    .comp-header { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
+    .comp-icon { font-size: 18px; }
+    .comp-type {
+      font-size: 11px; font-weight: 700; letter-spacing: .1em;
+      text-transform: uppercase;
+    }
+    .comparison-card.fisico .comp-type { color: var(--blue); }
+    .comparison-card.digital .comp-type { color: #a371f7; }
+    .comp-price {
+      font-size: 44px; font-weight: 800; line-height: 1; margin-bottom: 4px;
+    }
+    .comparison-card.fisico .comp-price { color: var(--blue); }
+    .comparison-card.digital .comp-price { color: #a371f7; }
+    .comp-sub { font-size: 12px; color: var(--text2); margin-bottom: 12px; }
+    .comp-desc { font-size: 13px; color: var(--text2); line-height: 1.5; margin-bottom: 12px; }
+    .comp-pros { font-size: 12px; color: var(--text2); margin-bottom: 4px; }
+    .comp-cons { font-size: 12px; color: var(--text2); }
+    .comp-pros strong { color: var(--green); }
+    .comp-cons strong { color: var(--red); }
+    .comparison-alert {
+      border-radius: 8px; padding: 14px 18px; margin-bottom: 10px;
+      font-size: 13px; line-height: 1.5;
+    }
+    .comparison-alert.similar {
+      background: rgba(210,153,34,.08); border: 1px solid rgba(210,153,34,.25); color: var(--gold);
+    }
+    .comparison-alert.fisico-wins {
+      background: rgba(88,166,255,.08); border: 1px solid rgba(88,166,255,.25); color: var(--blue);
+    }
+    .comparison-alert.digital-wins {
+      background: rgba(163,113,247,.08); border: 1px solid rgba(163,113,247,.25); color: #a371f7;
+    }
+    .comparison-alert strong { display: block; margin-bottom: 4px; font-size: 14px; }
+    .comp-note { font-size: 11px; color: var(--text3); text-align: center; }
+
     /* ── ALERT STRIP ── */
     .alert-strip {
       background: rgba(88,166,255,.08); border: 1px solid rgba(88,166,255,.2);
@@ -331,6 +380,37 @@
       <div class="rate-currency">Bolivianos por 1 USDT</div>
       <div class="rate-source">Fuente: Binance P2P Bolivia</div>
     </div>
+  </div>
+
+  <!-- USD FISICO vs USDT DIGITAL -->
+  <div class="comparison-section">
+    <div class="section-title"><span class="icon">⚖️</span> USD Físico vs USDT Digital — ¿Cuál conviene más?</div>
+    <div class="comparison-grid">
+      <div class="comparison-card fisico">
+        <div class="comp-header">
+          <span class="comp-icon">🏛️</span>
+          <span class="comp-type">USD FÍSICO (LIBRECAMBISTA)</span>
+        </div>
+        <div class="comp-price" id="bcbVrdPrice">—</div>
+        <div class="comp-sub">Bs por 1 USD · VRD BCB</div>
+        <p class="comp-desc">Precio promedio ponderado de las operaciones reales entre bancos y librecambistas en Bolivia.</p>
+        <div class="comp-pros"><strong>Ventajas:</strong> Efectivo en mano, sin apps, sin cuentas.</div>
+        <div class="comp-cons"><strong>Riesgo:</strong> Variación en el mercado, requiere contacto físico.</div>
+      </div>
+      <div class="comparison-card digital">
+        <div class="comp-header">
+          <span class="comp-icon">♦️</span>
+          <span class="comp-type">USDT DIGITAL (P2P)</span>
+        </div>
+        <div class="comp-price" id="compDigitalPrice">—</div>
+        <div class="comp-sub">Bs por 1 USDT · Precio Compra Binance P2P</div>
+        <p class="comp-desc">Precio de compra en el mercado P2P de Binance — lo que pagas para adquirir 1 USDT con bolivianos.</p>
+        <div class="comp-pros"><strong>Ventajas:</strong> Transacciones digitales, disponible 24/7, envíos internacionales.</div>
+        <div class="comp-cons"><strong>Riesgo:</strong> Volatilidad crypto, requiere billetera digital.</div>
+      </div>
+    </div>
+    <div class="comparison-alert" id="compAlert" style="display:none"></div>
+    <div class="comp-note">* Diferencia calculada en base al VRD BCB del día vs precio de compra Binance P2P (en vivo)</div>
   </div>
 
   <!-- PLATFORMS -->
@@ -571,7 +651,10 @@
     });
     const data = await res.json();
     const prices = data.data.slice(0, 5).map(ad => parseFloat(ad.adv.price));
-    return prices.length ? Math.round(prices.reduce((a, b) => a + b) / prices.length * 100) / 100 : null;
+    if (!prices.length) return null;
+    // BUY: el mejor para el usuario es el MÁS ALTO (más Bs por USDT que vendes)
+    // SELL: el mejor para el usuario es el MÁS BAJO (menos Bs para comprar USDT)
+    return Math.round((tradeType === 'BUY' ? Math.max(...prices) : Math.min(...prices)) * 100) / 100;
   }
 
   async function loadPrices() {
@@ -615,6 +698,30 @@
 
     pricesData = base;
     renderAll();
+  }
+
+  function renderComparison(binance, bcb) {
+    const vrd = bcb.referentialBuy;
+    const p2p = binance.buy;
+    if (!vrd || !p2p) return;
+
+    document.getElementById('bcbVrdPrice').textContent = 'Bs ' + vrd.toFixed(2);
+    document.getElementById('compDigitalPrice').textContent = 'Bs ' + p2p.toFixed(2);
+
+    const diff = Math.abs(p2p - vrd).toFixed(2);
+    const alert = document.getElementById('compAlert');
+    alert.style.display = '';
+
+    if (parseFloat(diff) <= 0.20) {
+      alert.className = 'comparison-alert similar';
+      alert.innerHTML = `<strong>⚖️ Precios Similares — Diferencia de solo Bs ${diff}</strong>El USD físico (VRD Bs ${vrd.toFixed(2)}) y el USDT digital (Bs ${p2p.toFixed(2)}) tienen precios muy similares hoy. Elige según tu necesidad: dólares físicos para efectivo, USDT para pagos digitales e internacionales.`;
+    } else if (vrd < p2p) {
+      alert.className = 'comparison-alert fisico-wins';
+      alert.innerHTML = `<strong>🏛️ El USD físico conviene más — Ahorra Bs ${diff} por dólar</strong>Hoy el dólar físico (Bs ${vrd.toFixed(2)}) está más barato que el USDT P2P (Bs ${p2p.toFixed(2)}). Si necesitas dólares en efectivo, el librecambista ofrece mejor precio.`;
+    } else {
+      alert.className = 'comparison-alert digital-wins';
+      alert.innerHTML = `<strong>♦️ El USDT digital conviene más — Ahorra Bs ${diff} por dólar</strong>Hoy el USDT P2P (Bs ${p2p.toFixed(2)}) está más barato que el dólar físico (Bs ${vrd.toFixed(2)}). Ideal si haces transacciones digitales o envíos internacionales.`;
+    }
   }
 
   function renderAll() {
@@ -662,6 +769,9 @@
     document.getElementById('footerBcbRefBuy').textContent = bcb.referentialBuy + ' Bs';
     document.getElementById('footerBcbRefSell').textContent = bcb.referentialSell + ' Bs';
     document.getElementById('footerBcbDate').innerHTML = 'Cotización: ' + (displayDate || '') + '<br>Fuente: Banco Central de Bolivia';
+
+    // Comparison
+    renderComparison(binance, bcb);
 
     // Chart
     renderChart(currentRange);
