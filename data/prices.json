@@ -1,6 +1,6 @@
 {
-  "lastUpdated": "2026-06-22T22:57:52Z",
-  "displayDate": "lunes 22 de junio, 2026",
+  "lastUpdated": "2026-06-23T10:49:39Z",
+  "displayDate": "martes 23 de junio, 2026",
   "binance": {
     "buy": 9.97,
     "sell": 9.93,
@@ -235,6 +235,11 @@
     },
     {
       "date": "2026-06-22",
+      "buy": 9.97,
+      "sell": 9.93
+    },
+    {
+      "date": "2026-06-23",
       "buy": 9.97,
       "sell": 9.93
     }
