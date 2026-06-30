@@ -1,23 +1,23 @@
 {
-  "lastUpdated": "2026-06-30T10:23:39Z",
+  "lastUpdated": "2026-06-30T13:02:58Z",
   "displayDate": "martes 30 de junio, 2026",
   "binance": {
-    "buy": 9.93,
+    "buy": 9.92,
     "sell": 9.89,
     "available": true
   },
   "airtm": {
-    "buy": 9.89,
+    "buy": 9.88,
     "sell": 9.86,
     "available": true
   },
   "eldorado": {
-    "buy": 9.86,
+    "buy": 9.85,
     "sell": 9.83,
     "available": true
   },
   "takenos": {
-    "buy": 9.83,
+    "buy": 9.82,
     "sell": 9.8,
     "available": true
   },
@@ -275,7 +275,7 @@
     },
     {
       "date": "2026-06-30",
-      "buy": 9.93,
+      "buy": 9.92,
       "sell": 9.89
     }
   ]
