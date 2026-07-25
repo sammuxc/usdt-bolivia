@@ -1,24 +1,24 @@
 {
-  "lastUpdated": "2026-07-25T20:04:20Z",
+  "lastUpdated": "2026-07-25T21:43:09Z",
   "displayDate": "sábado 25 de julio, 2026",
   "binance": {
-    "buy": 11.64,
-    "sell": 11.58,
-    "available": true
-  },
-  "airtm": {
-    "buy": 11.59,
+    "buy": 11.63,
     "sell": 11.55,
     "available": true
   },
+  "airtm": {
+    "buy": 11.58,
+    "sell": 11.52,
+    "available": true
+  },
   "eldorado": {
-    "buy": 11.56,
-    "sell": 11.51,
+    "buy": 11.55,
+    "sell": 11.48,
     "available": true
   },
   "takenos": {
-    "buy": 11.52,
-    "sell": 11.48,
+    "buy": 11.51,
+    "sell": 11.45,
     "available": true
   },
   "bcb": {
@@ -325,8 +325,8 @@
     },
     {
       "date": "2026-07-25",
-      "buy": 11.64,
-      "sell": 11.58
+      "buy": 11.63,
+      "sell": 11.55
     }
   ]
 }
