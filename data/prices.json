@@ -1,23 +1,23 @@
 {
-  "lastUpdated": "2026-08-07T19:42:53Z",
+  "lastUpdated": "2026-08-07T20:27:56Z",
   "displayDate": "viernes 7 de agosto, 2026",
   "binance": {
-    "buy": 11.16,
+    "buy": 11.17,
     "sell": 11.13,
     "available": true
   },
   "airtm": {
-    "buy": 11.12,
+    "buy": 11.13,
     "sell": 11.1,
     "available": true
   },
   "eldorado": {
-    "buy": 11.08,
+    "buy": 11.09,
     "sell": 11.06,
     "available": true
   },
   "takenos": {
-    "buy": 11.05,
+    "buy": 11.06,
     "sell": 11.03,
     "available": true
   },
@@ -325,7 +325,7 @@
     },
     {
       "date": "2026-08-07",
-      "buy": 11.16,
+      "buy": 11.17,
       "sell": 11.13
     }
   ]
