@@ -1,6 +1,6 @@
 {
-  "lastUpdated": "2026-08-21T03:40:45Z",
-  "displayDate": "jueves 20 de agosto, 2026",
+  "lastUpdated": "2026-08-21T04:27:04Z",
+  "displayDate": "viernes 21 de agosto, 2026",
   "binance": {
     "buy": 11.66,
     "sell": 11.62,
@@ -28,11 +28,6 @@
     "referentialSell": 9.86
   },
   "history": [
-    {
-      "date": "2026-06-22",
-      "buy": 9.97,
-      "sell": 9.93
-    },
     {
       "date": "2026-06-23",
       "buy": 9.92,
@@ -325,6 +320,11 @@
     },
     {
       "date": "2026-08-20",
+      "buy": 11.66,
+      "sell": 11.62
+    },
+    {
+      "date": "2026-08-21",
       "buy": 11.66,
       "sell": 11.62
     }
