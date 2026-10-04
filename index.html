@@ -3,385 +3,204 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>USDT Bolivia - Univalle</title>
-  <meta name="description" content="Cotización diaria del USDT en Bolivia. Precio de compra y venta en mercados P2P. Proyecto académico Universidad del Valle." />
+  <title>Tipo de Cambio Bolivia — Dólar Hoy</title>
+  <meta name="description" content="Tipo de cambio del dólar en Bolivia. Cotización oficial BCB, mercado paralelo y pizarras de todos los bancos comparadas en un solo lugar." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
   <style>
     :root {
-      --navy:    #003087;
-      --navy2:   #00236b;
-      --gold:    #F5B800;
-      --gold2:   #d9a400;
-      --blue:    #0055B3;
-      --blue-lt: #E8F0FB;
-      --green:   #1a7f37;
-      --red:     #d32f2f;
-      --bg:      #F7F9FC;
-      --bg2:     #FFFFFF;
-      --bg3:     #EEF2F8;
-      --border:  #D6DFF0;
-      --text:    #0D1B3E;
-      --text2:   #4A5573;
-      --text3:   #8A95B0;
-      --radius:  12px;
-      --shadow:  0 2px 12px rgba(0,48,135,0.08);
-      --shadow-lg: 0 8px 32px rgba(0,48,135,0.14);
+      --navy:    #0a2463;
+      --navy2:   #061a4a;
+      --gold:    #f5b800;
+      --blue:    #1565c0;
+      --blue-lt: #e3f0ff;
+      --green:   #1b7a3e;
+      --green-lt:#e6f4ec;
+      --red:     #c62828;
+      --red-lt:  #fce8e8;
+      --bg:      #f4f6fb;
+      --bg2:     #ffffff;
+      --bg3:     #eef1f8;
+      --border:  #d5daea;
+      --text:    #0d1b3e;
+      --text2:   #445070;
+      --text3:   #8a93ad;
+      --radius:  14px;
+      --shadow:  0 2px 16px rgba(10,36,99,.08);
+      --shadow-md: 0 4px 24px rgba(10,36,99,.12);
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
-    body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; }
+    body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; min-height: 100vh; }
 
     /* ══ TOP BAR ══ */
     .topbar {
-      background: var(--navy); color: rgba(255,255,255,.85);
-      font-size: 12px; padding: 7px 16px;
+      background: var(--navy2); color: rgba(255,255,255,.8);
+      font-size: 12px; padding: 8px 20px;
       display: flex; align-items: center; justify-content: center; gap: 8px;
     }
     .live-dot { width:7px; height:7px; border-radius:50%; background:var(--gold); animation:pulse 2s infinite; flex-shrink:0; }
-    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.3} }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.35} }
 
     /* ══ HEADER ══ */
-    header { background:var(--bg2); border-bottom:1px solid var(--border); position:sticky; top:0; z-index:300; box-shadow:0 2px 8px rgba(0,48,135,.06); }
-    .header-inner { max-width:1100px; margin:0 auto; padding:0 20px; display:flex; align-items:center; justify-content:space-between; height:60px; gap:12px; }
-    .logo { display:flex; align-items:center; gap:10px; text-decoration:none; flex-shrink:0; }
-    .logo-icon { width:36px; height:36px; border-radius:9px; background:var(--navy); display:flex; align-items:center; justify-content:center; font-size:18px; font-weight:900; color:var(--gold); }
-    .logo-text .main { font-size:15px; font-weight:800; color:var(--navy); line-height:1.2; }
-    .logo-text .sub  { font-size:10px; font-weight:600; color:var(--gold2); text-transform:uppercase; letter-spacing:.08em; }
-    /* Desktop nav */
-    nav { display:flex; gap:2px; }
-    nav a { padding:6px 11px; border-radius:6px; font-size:13px; font-weight:600; color:var(--text2); text-decoration:none; transition:all .18s; white-space:nowrap; }
-    nav a:hover { background:var(--blue-lt); color:var(--navy); }
-    .header-date { font-size:12px; color:var(--text3); white-space:nowrap; flex-shrink:0; }
-    /* Hamburger */
-    .hamburger { display:none; flex-direction:column; gap:5px; cursor:pointer; padding:4px; background:none; border:none; }
-    .hamburger span { width:22px; height:2px; background:var(--navy); border-radius:2px; display:block; transition:all .3s; }
-    /* Mobile nav drawer */
-    .mobile-nav { display:none; position:fixed; top:60px; left:0; right:0; bottom:0; background:rgba(0,0,0,.5); z-index:299; }
-    .mobile-nav.open { display:block; }
-    .mobile-nav-inner { background:var(--bg2); padding:16px; display:flex; flex-direction:column; gap:4px; border-bottom:1px solid var(--border); box-shadow:0 8px 24px rgba(0,0,0,.1); }
-    .mobile-nav-inner a { padding:13px 16px; border-radius:8px; font-size:15px; font-weight:600; color:var(--text); text-decoration:none; display:block; transition:background .15s; }
-    .mobile-nav-inner a:hover { background:var(--blue-lt); color:var(--navy); }
+    header {
+      background: var(--bg2); border-bottom: 1px solid var(--border);
+      position: sticky; top: 0; z-index: 300;
+      box-shadow: 0 2px 10px rgba(10,36,99,.07);
+    }
+    .header-inner {
+      max-width: 1060px; margin: 0 auto; padding: 0 20px;
+      display: flex; align-items: center; justify-content: space-between; height: 62px;
+    }
+    .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .logo-icon {
+      width: 38px; height: 38px; border-radius: 10px;
+      background: var(--navy); display: flex; align-items: center; justify-content: center;
+      font-size: 19px; font-weight: 900; color: var(--gold);
+    }
+    .logo-text .main { font-size: 15px; font-weight: 800; color: var(--navy); line-height: 1.2; }
+    .logo-text .sub  { font-size: 11px; color: var(--text3); font-weight: 500; }
+    nav { display: flex; gap: 4px; }
+    nav a {
+      font-size: 13px; font-weight: 600; color: var(--text2); text-decoration: none;
+      padding: 7px 13px; border-radius: 8px; transition: background .15s, color .15s;
+    }
+    nav a:hover { background: var(--bg3); color: var(--navy); }
+    .header-time { font-size: 11px; color: var(--text3); text-align: right; }
+    .header-time strong { color: var(--text2); font-size: 12px; }
 
-    @media (max-width:768px) {
-      nav, .header-date { display:none; }
-      .hamburger { display:flex; }
+    /* ══ HERO ══ */
+    .hero {
+      background: linear-gradient(135deg, var(--navy) 0%, var(--blue) 100%);
+      padding: 48px 20px 56px;
+    }
+    .hero-inner { max-width: 1060px; margin: 0 auto; }
+    .hero-title { color: #fff; font-size: 28px; font-weight: 800; margin-bottom: 6px; }
+    .hero-sub { color: rgba(255,255,255,.65); font-size: 14px; margin-bottom: 32px; }
+
+    .hero-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+    .hero-card {
+      background: rgba(255,255,255,.12); backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,.18); border-radius: 18px;
+      padding: 24px 28px; color: #fff; transition: transform .2s;
+    }
+    .hero-card:hover { transform: translateY(-2px); }
+    .hero-card-label {
+      font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+      opacity: .75; margin-bottom: 8px; display: flex; align-items: center; gap: 6px;
+    }
+    .hero-card-label .dot { width: 6px; height: 6px; border-radius: 50%; }
+    .hero-card-title { font-size: 16px; font-weight: 700; margin-bottom: 16px; }
+    .hero-rate-row { display: flex; gap: 20px; }
+    .hero-rate { flex: 1; }
+    .hero-rate-label { font-size: 11px; opacity: .65; margin-bottom: 3px; font-weight: 600; }
+    .hero-rate-val { font-size: 30px; font-weight: 800; line-height: 1; }
+    .hero-rate-val span { font-size: 14px; font-weight: 500; opacity: .7; }
+    .hero-divider { width: 1px; background: rgba(255,255,255,.2); margin: 0 4px; }
+    .hero-source { margin-top: 14px; font-size: 11px; opacity: .55; }
+
+    /* card accent */
+    .hc-oficial .dot { background: var(--gold); }
+    .hc-paralelo .dot { background: #66d9a8; }
+
+    /* ══ MAIN CONTENT ══ */
+    main { max-width: 1060px; margin: 0 auto; padding: 36px 20px 60px; }
+
+    /* ══ SECTION HEADER ══ */
+    .section-head {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 20px; gap: 12px; flex-wrap: wrap;
+    }
+    .section-title { font-size: 18px; font-weight: 800; color: var(--navy); display: flex; align-items: center; gap: 8px; }
+    .section-badge {
+      background: var(--blue-lt); color: var(--blue); font-size: 11px; font-weight: 700;
+      padding: 3px 10px; border-radius: 20px; letter-spacing: .04em;
     }
 
-    /* ══ HERO SPLIT ══ */
-    .hero-section { background:var(--bg2); border-bottom:1px solid var(--border); padding:40px 20px 48px; }
-    .hero-inner { max-width:1100px; margin:0 auto; display:grid; grid-template-columns:1fr 1fr; gap:40px; align-items:center; }
-    @media (max-width:760px) { .hero-inner { grid-template-columns:1fr; gap:28px; } }
+    /* ══ TOGGLE ══ */
+    .toggle-wrap { display: flex; background: var(--bg3); border-radius: 10px; padding: 3px; gap: 2px; }
+    .toggle-btn {
+      font-size: 12px; font-weight: 700; padding: 7px 16px; border-radius: 8px;
+      border: none; cursor: pointer; background: transparent; color: var(--text2); transition: all .2s;
+    }
+    .toggle-btn.active { background: var(--bg2); color: var(--navy); box-shadow: 0 1px 6px rgba(10,36,99,.1); }
 
-    /* Left */
-    .hero-left {}
-    .hero-badge { display:inline-block; background:var(--blue-lt); border:1px solid #c3d7f7; color:var(--navy); font-size:11px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; padding:4px 12px; border-radius:20px; margin-bottom:16px; }
-    .hero-title { font-size: clamp(36px, 7vw, 60px); font-weight:900; line-height:1.05; color:var(--text); margin-bottom:4px; }
-    .hero-title span { color:var(--navy); }
-    .hero-toggle { display:flex; gap:10px; margin:18px 0 16px; }
-    .hero-toggle-btn { display:flex; align-items:center; gap:6px; padding:9px 18px; border-radius:50px; border:2px solid var(--border); background:var(--bg3); color:var(--text2); font-size:14px; font-weight:700; cursor:pointer; font-family:'Inter',sans-serif; transition:all .2s; }
-    .hero-toggle-btn.active.buy  { background:var(--green); border-color:var(--green); color:#fff; }
-    .hero-toggle-btn.active.sell { background:var(--red);   border-color:var(--red);   color:#fff; }
-    .hero-toggle-btn .arrow { font-size:16px; }
-    .hero-big-price { font-size: clamp(52px, 12vw, 88px); font-weight:900; line-height:1; color:var(--navy); margin-bottom:6px; transition:color .3s; }
-    .hero-big-price.sell-mode { color:var(--red); }
-    .hero-price-label { display:flex; align-items:center; gap:10px; margin-bottom:14px; }
-    .hero-price-pill { background:var(--blue-lt); color:var(--navy); font-size:12px; font-weight:700; padding:4px 12px; border-radius:20px; }
-    .hero-desc { font-size:13px; color:var(--text2); line-height:1.6; max-width:380px; }
+    /* ══ BEST BANNER ══ */
+    .best-banner {
+      background: linear-gradient(135deg, #e8faf1 0%, #d0f4e1 100%);
+      border: 1.5px solid #7dd8a4; border-radius: 14px;
+      padding: 16px 20px; margin-bottom: 22px;
+      display: flex; align-items: center; gap: 14px;
+    }
+    .best-banner-medal { font-size: 32px; line-height: 1; }
+    .best-banner-body {}
+    .best-banner-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--green); margin-bottom: 2px; }
+    .best-banner-name { font-size: 18px; font-weight: 800; color: var(--navy); }
+    .best-banner-rate { font-size: 13px; color: var(--text2); margin-top: 2px; }
+    .best-banner-rate strong { color: var(--green); font-size: 16px; }
 
-    /* Right */
-    .hero-right {}
-    .rates-card { background:var(--bg2); border:1px solid var(--border); border-radius:16px; overflow:hidden; box-shadow:var(--shadow-lg); }
-    .rates-card-header { background:var(--bg3); padding:12px 20px; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--border); }
-    .rates-card-title { font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:.1em; color:var(--text2); }
-    .rates-card-badge { font-size:10px; font-weight:700; padding:3px 10px; border-radius:10px; background:var(--blue-lt); color:var(--navy); }
-    .rates-row { display:grid; grid-template-columns:1fr 1fr; }
-    .rate-box { padding:20px; text-align:center; }
-    .rate-box:first-child { border-right:1px solid var(--border); }
-    .rate-box-label { display:flex; align-items:center; justify-content:center; gap:5px; font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.08em; margin-bottom:8px; }
-    .rate-box-label.buy-label  { color:var(--green); }
-    .rate-box-label.sell-label { color:var(--red); }
-    .rate-box-val { font-size:32px; font-weight:900; color:var(--navy); }
-    .rate-box-val.buy-val  { color:var(--green); }
-    .rate-box-val.sell-val { color:var(--red); }
-    .rates-divider { height:1px; background:var(--border); margin:0 20px; }
-    .rates-footer { padding:14px 20px; display:flex; justify-content:space-between; align-items:center; }
-    .rates-footer-text { font-size:11px; color:var(--text3); }
-    .share-btn { display:flex; align-items:center; gap:6px; padding:9px 18px; background:var(--navy); color:#fff; border:none; border-radius:8px; font-size:13px; font-weight:700; cursor:pointer; font-family:'Inter',sans-serif; transition:background .2s; }
-    .share-btn:hover { background:var(--navy2); }
-    .share-btn:active { transform:scale(.97); }
+    /* ══ BANK GRID ══ */
+    .banks-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 14px; }
+    .bank-card {
+      background: var(--bg2); border: 1.5px solid var(--border); border-radius: 14px;
+      padding: 18px 20px; transition: box-shadow .2s, border-color .2s; position: relative;
+      display: flex; flex-direction: column; gap: 12px;
+    }
+    .bank-card:hover { box-shadow: var(--shadow-md); border-color: #b0bcd8; }
+    .bank-card.rank1 { border-color: #f5b800; background: linear-gradient(135deg,#fffbe8,#fff); }
+    .bank-card.rank2 { border-color: #b0bcd8; background: linear-gradient(135deg,#f5f7fa,#fff); }
+    .bank-card.rank3 { border-color: #c8a87a; background: linear-gradient(135deg,#fdf5eb,#fff); }
 
-    /* ══ MAIN ══ */
-    main { max-width:1100px; margin:0 auto; padding:28px 20px 56px; }
-    .section-title { font-size:15px; font-weight:800; color:var(--navy); margin-bottom:14px; display:flex; align-items:center; gap:8px; }
-    .card { background:var(--bg2); border:1px solid var(--border); border-radius:var(--radius); padding:22px; margin-bottom:22px; box-shadow:var(--shadow); }
-    .alert-strip { background:var(--blue-lt); border:1px solid #c3d7f7; border-radius:8px; padding:10px 14px; margin-bottom:22px; font-size:13px; color:var(--navy); display:flex; align-items:flex-start; gap:8px; }
+    .bank-rank-badge {
+      position: absolute; top: 14px; right: 16px;
+      font-size: 22px; line-height: 1;
+    }
+    .bank-card-name { font-size: 14px; font-weight: 700; color: var(--navy); padding-right: 32px; }
+    .bank-card-rates { display: flex; gap: 10px; }
+    .bank-rate-box { flex: 1; background: var(--bg3); border-radius: 9px; padding: 10px 12px; }
+    .bank-rate-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 3px; }
+    .bank-rate-label.buy  { color: var(--green); }
+    .bank-rate-label.sell { color: var(--red); }
+    .bank-rate-val { font-size: 17px; font-weight: 800; color: var(--text); }
+    .bank-rate-val .unit { font-size: 11px; font-weight: 500; color: var(--text3); }
+    .bank-rate-val.na { font-size: 14px; color: var(--text3); font-weight: 500; }
+    .bank-rank-num { font-size: 11px; color: var(--text3); font-weight: 600; }
 
-    /* ══ PLATFORMS TABLE ══ */
-    .platforms-grid { background:var(--bg2); border:1px solid var(--border); border-radius:var(--radius); overflow:hidden; margin-bottom:22px; box-shadow:var(--shadow); }
-    .table-scroll { overflow-x:auto; -webkit-overflow-scrolling:touch; }
-    .platforms-grid table { width:100%; border-collapse:collapse; min-width:400px; }
-    .platforms-grid thead tr { background:var(--navy); }
-    .platforms-grid th { padding:11px 14px; text-align:left; font-size:11px; font-weight:700; color:rgba(255,255,255,.8); text-transform:uppercase; letter-spacing:.06em; white-space:nowrap; }
-    .platforms-grid th:not(:first-child) { text-align:center; }
-    .platforms-grid td { padding:13px 14px; border-top:1px solid var(--border); font-size:14px; vertical-align:middle; }
-    .platforms-grid td:not(:first-child) { text-align:center; }
-    .platform-name { font-weight:700; color:var(--text); }
-    .platform-badge { display:inline-block; font-size:10px; padding:2px 8px; border-radius:10px; margin-left:6px; vertical-align:middle; background:rgba(245,184,0,.15); color:var(--gold2); border:1px solid rgba(245,184,0,.4); }
-    .price-buy  { color:var(--green); font-weight:700; }
-    .price-sell { color:var(--red);   font-weight:700; }
-    .spread { color:var(--text3); font-size:13px; }
-    .platform-link { color:var(--blue); font-size:12px; text-decoration:none; font-weight:700; }
+    .bank-no-data {
+      text-align: center; padding: 40px 20px; color: var(--text3); font-size: 14px;
+    }
 
-    /* ══ CALCULATOR ══ */
-    .calc-wrapper { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
-    @media (max-width:640px) { .calc-wrapper { grid-template-columns:1fr; } }
-    .calc-left { display:flex; flex-direction:column; gap:14px; }
-    .calc-header-row { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px; margin-bottom:4px; }
-    .calc-rate-pill { background:var(--blue-lt); color:var(--navy); font-size:13px; font-weight:800; padding:5px 14px; border-radius:20px; border:1px solid #c3d7f7; white-space:nowrap; }
-    .calc-field-label { font-size:11px; font-weight:700; color:var(--text2); text-transform:uppercase; letter-spacing:.06em; margin-bottom:6px; }
-    .calc-field-row { display:flex; gap:8px; }
-    .calc-select { padding:12px 8px; border:2px solid var(--border); border-radius:8px; background:var(--bg3); color:var(--text); font-size:14px; font-weight:700; font-family:'Inter',sans-serif; outline:none; cursor:pointer; min-width:76px; transition:border-color .2s; }
-    .calc-select:focus { border-color:var(--navy); }
-    .calc-input { flex:1; padding:12px 14px; border:2px solid var(--border); border-radius:8px; background:var(--bg2); color:var(--text); font-size:20px; font-weight:700; font-family:'Inter',sans-serif; outline:none; transition:border-color .2s; min-width:0; }
-    .calc-input:focus { border-color:var(--navy); }
-    .calc-sublabel { font-size:11px; color:var(--text3); margin-top:3px; }
-    .calc-swap-wrap { display:flex; justify-content:center; }
-    .calc-swap { width:38px; height:38px; border-radius:50%; border:2px solid var(--border); background:var(--bg2); cursor:pointer; font-size:16px; display:flex; align-items:center; justify-content:center; transition:all .2s; color:var(--navy); }
-    .calc-swap:hover { background:var(--navy); color:#fff; border-color:var(--navy); }
-    .calc-quick { display:flex; gap:8px; flex-wrap:wrap; }
-    .calc-quick-btn { flex:1; min-width:44px; padding:10px 4px; border:2px solid var(--border); border-radius:8px; background:var(--bg3); color:var(--text2); font-size:14px; font-weight:700; cursor:pointer; font-family:'Inter',sans-serif; transition:all .2s; text-align:center; }
-    .calc-quick-btn:hover { border-color:var(--navy); color:var(--navy); background:var(--blue-lt); }
-    .calc-convert-btn { width:100%; padding:15px; background:var(--navy); color:#fff; border:none; border-radius:10px; font-size:15px; font-weight:800; cursor:pointer; font-family:'Inter',sans-serif; transition:background .2s; }
-    .calc-convert-btn:hover { background:var(--navy2); }
-    .calc-rate-note { font-size:12px; color:var(--text2); text-align:center; font-weight:600; }
-    .calc-right { display:flex; flex-direction:column; }
-    .calc-history-title { display:flex; align-items:center; gap:8px; font-size:14px; font-weight:800; color:var(--navy); margin-bottom:14px; }
-    .calc-history-list { display:flex; flex-direction:column; gap:8px; }
-    .calc-history-item { background:var(--bg3); border-radius:8px; padding:12px 14px; display:flex; justify-content:space-between; align-items:center; border:1px solid var(--border); }
-    .calc-history-conv { font-size:13px; font-weight:700; color:var(--text); }
-    .calc-history-meta { text-align:right; font-size:11px; color:var(--text3); line-height:1.6; }
-    .calc-empty { font-size:13px; color:var(--text3); text-align:center; padding:24px 0; }
-
-    /* ══ CHART ══ */
-    .chart-header { display:flex; flex-wrap:wrap; align-items:flex-start; justify-content:space-between; gap:12px; margin-bottom:12px; }
-    .chart-stats  { display:flex; gap:16px; flex-wrap:wrap; }
-    .chart-stat-label { font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.08em; color:var(--text3); margin-bottom:2px; }
-    .chart-stat-value { font-size:14px; font-weight:800; color:var(--text); }
-    .chart-stat-value.up   { color:var(--green); }
-    .chart-stat-value.down { color:var(--red); }
-    .chart-tabs { display:flex; gap:4px; flex-wrap:wrap; margin-bottom:8px; }
-    .chart-tab { padding:5px 12px; border-radius:20px; border:1px solid var(--border); background:transparent; color:var(--text3); font-size:12px; font-weight:700; cursor:pointer; font-family:'Inter',sans-serif; transition:all .2s; min-height:32px; }
-    .chart-tab:hover { color:var(--navy); background:var(--blue-lt); border-color:var(--navy); }
-    .chart-tab.active { background:var(--navy); border-color:var(--navy); color:#fff; }
-    .chart-meta { font-size:11px; color:var(--text3); margin-bottom:10px; }
-    .chart-legend { display:flex; gap:16px; margin-bottom:10px; }
-    .chart-legend-item { display:flex; align-items:center; gap:6px; font-size:12px; color:var(--text2); font-weight:600; }
-    .chart-legend-dot { width:10px; height:10px; border-radius:50%; }
-    .chart-wrap { position:relative; height:260px; }
-    @media (max-width:480px) { .chart-wrap { height:200px; } }
-
-    /* ══ BCB ══ */
-    .bcb-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
-    @media (max-width:460px) { .bcb-grid { grid-template-columns:1fr; } }
-    .bcb-type { border-radius:8px; padding:16px; }
-    .bcb-type.oficial    { background:var(--blue-lt); border:1px solid #c3d7f7; }
-    .bcb-type.referencial { background:#fffbea; border:1px solid #f5d87a; }
-    .bcb-type-label { font-size:10px; font-weight:800; letter-spacing:.12em; text-transform:uppercase; margin-bottom:10px; }
-    .bcb-type.oficial .bcb-type-label    { color:var(--navy); }
-    .bcb-type.referencial .bcb-type-label { color:var(--gold2); }
-    .bcb-row { display:flex; justify-content:space-between; font-size:13px; margin-bottom:6px; }
-    .bcb-row span:first-child { color:var(--text2); }
-    .bcb-row span:last-child  { font-weight:800; }
-    .bcb-date { font-size:11px; color:var(--text3); margin-top:12px; }
-
-    /* ══ LIMITS NEW ══ */
-    .limits-section { background:var(--bg3); border-radius:20px; padding:32px 24px; margin-bottom:22px; }
-    .limits-hero { text-align:center; margin-bottom:24px; }
-    .limits-icon { width:52px; height:52px; background:var(--blue-lt); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:24px; margin:0 auto 12px; }
-    .limits-hero h2 { font-size:clamp(22px,4vw,30px); font-weight:900; color:var(--navy); margin-bottom:6px; }
-    .limits-hero p  { font-size:13px; color:var(--text2); }
-    .limits-legend { display:flex; gap:16px; justify-content:center; flex-wrap:wrap; margin-bottom:16px; }
-    .limits-legend-item { display:flex; align-items:center; gap:6px; font-size:12px; color:var(--text2); font-weight:600; }
-    .limits-legend-dot { width:10px; height:10px; border-radius:50%; }
-    .limits-filters { display:flex; gap:8px; justify-content:center; flex-wrap:wrap; margin-bottom:24px; }
-    .limits-filter-btn { padding:8px 20px; border-radius:50px; border:2px solid var(--border); background:var(--bg2); color:var(--text2); font-size:13px; font-weight:700; cursor:pointer; font-family:'Inter',sans-serif; transition:all .2s; }
-    .limits-filter-btn.active { background:var(--navy); border-color:var(--navy); color:#fff; }
-    .limits-filter-btn:hover:not(.active) { border-color:var(--navy); color:var(--navy); }
-    .limits-cards-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; }
-    @media (max-width:900px) { .limits-cards-grid { grid-template-columns:1fr 1fr; } }
-    @media (max-width:480px) { .limits-cards-grid { grid-template-columns:1fr; } }
-    .limit-card { background:var(--bg2); border-radius:14px; padding:18px; border-left:4px solid #22c55e; box-shadow:var(--shadow); transition:transform .18s,box-shadow .18s; }
-    .limit-card:hover { transform:translateY(-2px); box-shadow:var(--shadow-lg); }
-    .limit-card.mod  { border-left-color:#f59e0b; }
-    .limit-card.high { border-left-color:#ef4444; }
-    .limit-card-top  { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:10px; }
-    .limit-card-name { font-size:14px; font-weight:800; color:var(--text); }
-    .limit-card-badge { font-size:10px; font-weight:700; padding:3px 10px; border-radius:20px; white-space:nowrap; }
-    .limit-card-badge.ok   { background:#dcfce7; color:#166534; }
-    .limit-card-badge.mod  { background:#fef3c7; color:#92400e; }
-    .limit-card-badge.high { background:#fee2e2; color:#991b1b; }
-    .limit-card-amount-row { background:var(--bg3); border-radius:8px; padding:10px 12px; display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; }
-    .limit-card-amount-label { font-size:12px; color:var(--text2); }
-    .limit-card-amount-val { font-size:18px; font-weight:900; color:var(--navy); }
-    .limit-card-note { font-size:11px; color:var(--text3); margin-bottom:12px; line-height:1.5; }
-    .limit-card-btn { display:block; width:100%; padding:9px; background:var(--navy); color:#fff; border:none; border-radius:8px; font-size:12px; font-weight:700; text-align:center; cursor:pointer; text-decoration:none; font-family:'Inter',sans-serif; transition:background .2s; }
-    .limit-card-btn:hover { background:var(--navy2); }
-    .limits-note { margin-top:18px; font-size:12px; color:var(--text2); background:#fffbea; border:1px solid #f5d87a; border-radius:10px; padding:12px 16px; text-align:center; }
-
-    /* ══ PLATFORM CARDS NEW ══ */
-    .plat-section-hero { text-align:center; margin-bottom:28px; }
-    .plat-section-icon { width:52px; height:52px; background:var(--blue-lt); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:24px; margin:0 auto 12px; }
-    .plat-section-hero h2 { font-size:clamp(22px,4vw,30px); font-weight:900; color:var(--navy); margin-bottom:6px; }
-    .plat-section-hero p  { font-size:13px; color:var(--text2); }
-    .plat-main-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:20px; }
-    @media (max-width:700px) { .plat-main-grid { grid-template-columns:1fr; } }
-    .plat-big-card { border-radius:20px; padding:22px; position:relative; overflow:hidden; color:#fff; transition:transform .2s,box-shadow .2s; }
-    .plat-big-card:hover { transform:translateY(-3px); box-shadow:0 16px 48px rgba(0,0,0,.25); }
-    .plat-big-card::before { content:''; position:absolute; top:-40px; right:-40px; width:180px; height:180px; border-radius:50%; background:rgba(255,255,255,.06); pointer-events:none; }
-    .plat-big-card::after  { content:''; position:absolute; bottom:-60px; left:-30px; width:220px; height:220px; border-radius:50%; background:rgba(255,255,255,.04); pointer-events:none; }
-    .plat-big-partner { position:absolute; top:16px; right:16px; background:var(--gold); color:#000; font-size:10px; font-weight:800; padding:4px 12px; border-radius:20px; }
-    .plat-big-header { display:flex; align-items:center; gap:12px; margin-bottom:16px; position:relative; z-index:1; }
-    .plat-big-logo { width:52px; height:52px; border-radius:14px; background:rgba(255,255,255,.15); display:flex; align-items:center; justify-content:center; font-size:26px; flex-shrink:0; }
-    .plat-big-name { font-size:22px; font-weight:900; }
-    .plat-big-stars { font-size:12px; opacity:.8; margin-top:2px; }
-    .plat-big-price-box { background:rgba(255,255,255,.12); border-radius:12px; padding:14px 16px; margin-bottom:14px; position:relative; z-index:1; }
-    .plat-big-price-label { font-size:11px; opacity:.75; font-weight:600; margin-bottom:4px; display:flex; justify-content:space-between; align-items:center; }
-    .plat-big-price-live { font-size:10px; font-weight:700; color:#4ade80; display:flex; align-items:center; gap:4px; }
-    .plat-big-price-live::before { content:''; width:6px; height:6px; border-radius:50%; background:#4ade80; animation:pulse 2s infinite; }
-    .plat-big-price-val { font-size:36px; font-weight:900; line-height:1.1; }
-    .plat-big-price-sub { font-size:11px; opacity:.65; margin-top:2px; display:flex; justify-content:space-between; }
-    .plat-big-desc { font-size:13px; opacity:.85; line-height:1.6; margin-bottom:12px; position:relative; z-index:1; }
-    .plat-big-features { list-style:none; margin-bottom:16px; display:flex; flex-direction:column; gap:5px; position:relative; z-index:1; }
-    .plat-big-features li { font-size:12px; opacity:.9; display:flex; align-items:center; gap:6px; }
-    .plat-big-features li::before { content:'✓'; font-weight:800; opacity:.8; }
-    .plat-big-btns { display:flex; gap:10px; position:relative; z-index:1; }
-    .plat-big-btn-sec { flex:1; padding:11px; border-radius:10px; border:2px solid rgba(255,255,255,.3); background:rgba(255,255,255,.1); color:#fff; font-size:12px; font-weight:700; text-align:center; text-decoration:none; display:flex; align-items:center; justify-content:center; gap:5px; transition:background .2s; cursor:pointer; font-family:'Inter',sans-serif; }
-    .plat-big-btn-sec:hover { background:rgba(255,255,255,.2); }
-    .plat-big-btn-main { flex:2; padding:11px; border-radius:10px; background:rgba(255,255,255,.92); font-size:13px; font-weight:800; text-align:center; text-decoration:none; display:flex; align-items:center; justify-content:center; gap:6px; transition:background .2s; cursor:pointer; }
-    .plat-big-btn-main:hover { background:#fff; }
-    /* Otras plataformas */
-    .otras-title { font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:.1em; color:var(--text3); text-align:center; margin:24px 0 14px; display:flex; align-items:center; gap:10px; }
-    .otras-title::before,.otras-title::after { content:''; flex:1; height:1px; background:var(--border); }
-    .otras-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; }
-    @media (max-width:900px) { .otras-grid { grid-template-columns:1fr 1fr; } }
-    @media (max-width:480px) { .otras-grid { grid-template-columns:1fr; } }
-    .otra-card { border-radius:16px; padding:18px; color:#fff; transition:transform .18s,box-shadow .18s; position:relative; overflow:hidden; }
-    .otra-card:hover { transform:translateY(-2px); box-shadow:0 10px 30px rgba(0,0,0,.2); }
-    .otra-card::after { content:''; position:absolute; bottom:-20px; right:-20px; width:80px; height:80px; border-radius:50%; background:rgba(255,255,255,.07); }
-    .otra-card-logo { font-size:28px; margin-bottom:8px; }
-    .otra-card-name { font-size:16px; font-weight:800; margin-bottom:2px; }
-    .otra-card-stars { font-size:11px; opacity:.7; margin-bottom:10px; }
-    .otra-card-desc { font-size:11px; opacity:.8; line-height:1.5; margin-bottom:12px; }
-    .otra-card-feats { list-style:none; margin-bottom:14px; display:flex; flex-direction:column; gap:4px; }
-    .otra-card-feats li { font-size:11px; opacity:.85; display:flex; align-items:center; gap:5px; }
-    .otra-card-feats li::before { content:'✓'; font-weight:800; }
-    .otra-card-btn { display:block; width:100%; padding:9px; border-radius:8px; background:rgba(255,255,255,.18); color:#fff; border:2px solid rgba(255,255,255,.3); font-size:12px; font-weight:700; text-align:center; text-decoration:none; font-family:'Inter',sans-serif; transition:background .2s; cursor:pointer; }
-    .otra-card-btn:hover { background:rgba(255,255,255,.28); }
-
-    /* ══ MODAL ══ */
-    .modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,.45); z-index:500; align-items:center; justify-content:center; padding:16px; }
-    .modal-overlay.open { display:flex; }
-    .modal { background:var(--bg2); border-radius:16px; padding:28px; max-width:660px; width:100%; max-height:85vh; overflow-y:auto; box-shadow:0 20px 60px rgba(0,48,135,.2); position:relative; }
-    .modal h2 { font-size:20px; font-weight:800; color:var(--navy); margin-bottom:16px; padding-right:32px; }
-    .modal h3 { font-size:14px; font-weight:700; color:var(--navy); margin:16px 0 8px; }
-    .modal p  { font-size:13px; color:var(--text2); line-height:1.7; margin-bottom:10px; }
-    .modal ul { font-size:13px; color:var(--text2); line-height:1.8; padding-left:18px; margin-bottom:10px; }
-    .modal-close { position:absolute; top:14px; right:16px; font-size:22px; cursor:pointer; color:var(--text3); background:none; border:none; font-family:'Inter',sans-serif; line-height:1; width:32px; height:32px; display:flex; align-items:center; justify-content:center; border-radius:6px; transition:all .2s; }
-    .modal-close:hover { background:var(--bg3); color:var(--navy); }
-    .modal-badge { display:inline-block; background:var(--blue-lt); color:var(--navy); font-size:11px; font-weight:700; padding:4px 12px; border-radius:20px; margin-bottom:12px; }
-    .project-box { background:var(--bg3); border-radius:10px; padding:16px; margin-top:16px; border-left:4px solid var(--gold); }
-    .project-box p { font-size:13px; color:var(--text2); }
-    .project-box strong { color:var(--navy); }
+    /* ══ CARD SECTION (info cards) ══ */
+    .info-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 14px; margin-top: 32px; }
+    .info-card {
+      background: var(--bg2); border: 1px solid var(--border); border-radius: 14px;
+      padding: 20px; display: flex; flex-direction: column; gap: 8px;
+    }
+    .info-card-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .07em; color: var(--text3); }
+    .info-card-val { font-size: 26px; font-weight: 800; color: var(--navy); }
+    .info-card-val .unit { font-size: 13px; font-weight: 500; color: var(--text3); }
+    .info-card-desc { font-size: 12px; color: var(--text2); line-height: 1.5; }
 
     /* ══ FOOTER ══ */
-    footer { background:var(--navy); color:rgba(255,255,255,.85); padding:40px 20px 24px; }
-    .footer-inner { max-width:1100px; margin:0 auto; }
-    .footer-bcb { background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.15); border-radius:var(--radius); padding:14px 18px; margin-bottom:28px; display:flex; flex-wrap:wrap; gap:20px; align-items:center; }
-    .footer-bcb-title { font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.1em; color:var(--gold); margin-bottom:2px; }
-    .footer-bcb-values { font-size:13px; color:#fff; }
-    .footer-bcb-date { font-size:11px; color:rgba(255,255,255,.45); margin-left:auto; text-align:right; }
-    @media (max-width:480px) { .footer-bcb-date { margin-left:0; } }
-    .footer-top { display:grid; grid-template-columns:2fr 1fr 1fr 1fr; gap:28px; margin-bottom:28px; }
-    @media (max-width:700px) { .footer-top { grid-template-columns:1fr 1fr; gap:20px; } }
-    @media (max-width:400px) { .footer-top { grid-template-columns:1fr; } }
-    .footer-logo-text { font-size:17px; font-weight:800; color:#fff; margin-bottom:8px; display:block; }
-    .footer-logo-text span { color:var(--gold); }
-    .footer-desc { font-size:13px; color:rgba(255,255,255,.6); line-height:1.6; }
-    .footer-col-title { font-size:11px; font-weight:700; color:rgba(255,255,255,.45); text-transform:uppercase; letter-spacing:.1em; margin-bottom:10px; }
-    .footer-col ul { list-style:none; }
-    .footer-col ul li { margin-bottom:8px; }
-    .footer-col ul li a { font-size:13px; color:rgba(255,255,255,.7); text-decoration:none; cursor:pointer; transition:color .2s; display:inline-block; padding:2px 0; }
-    .footer-col ul li a:hover { color:var(--gold); }
-    .footer-legal { font-size:12px; color:rgba(255,255,255,.45); line-height:1.6; padding-top:18px; border-top:1px solid rgba(255,255,255,.12); }
-    .footer-bottom { display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; margin-top:14px; gap:8px; }
-    .footer-copy { font-size:12px; color:rgba(255,255,255,.35); }
-    .footer-uni  { font-size:12px; color:var(--gold); font-weight:600; }
+    footer {
+      border-top: 1px solid var(--border); background: var(--bg2);
+      text-align: center; padding: 24px 20px; font-size: 12px; color: var(--text3);
+    }
+    footer strong { color: var(--text2); }
 
-    /* ══ BCB VRD SECTION ══ */
-    .bcb-vrd-section { margin-bottom:22px; }
-    .bcb-vrd-hero { background:linear-gradient(135deg,#0D3B6E 0%,#1565C0 60%,#0D47A1 100%); border-radius:20px; padding:28px 24px; color:#fff; margin-bottom:16px; position:relative; overflow:hidden; }
-    .bcb-vrd-hero::before { content:''; position:absolute; top:-50px; right:-50px; width:200px; height:200px; border-radius:50%; background:rgba(255,255,255,.05); }
-    .bcb-vrd-hero::after  { content:''; position:absolute; bottom:-60px; left:-40px; width:250px; height:250px; border-radius:50%; background:rgba(255,255,255,.04); }
-    .bcb-vrd-hero-inner { position:relative; z-index:1; }
-    .bcb-vrd-hero-top { display:flex; align-items:flex-start; justify-content:space-between; flex-wrap:wrap; gap:16px; margin-bottom:20px; }
-    .bcb-vrd-hero-title { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.12em; color:rgba(255,255,255,.6); margin-bottom:6px; }
-    .bcb-vrd-hero-name { font-size:clamp(18px,3vw,24px); font-weight:900; line-height:1.2; }
-    .bcb-vrd-hero-sub { font-size:12px; opacity:.65; margin-top:4px; }
-    .bcb-vrd-price-big { font-size:clamp(48px,8vw,72px); font-weight:900; line-height:1; }
-    .bcb-vrd-price-sub { font-size:12px; opacity:.6; margin-top:4px; }
-    .bcb-vrd-stats { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; }
-    @media (max-width:480px) { .bcb-vrd-stats { grid-template-columns:1fr 1fr; } }
-    .bcb-vrd-stat { background:rgba(255,255,255,.1); border-radius:10px; padding:12px; }
-    .bcb-vrd-stat-label { font-size:10px; opacity:.6; font-weight:600; text-transform:uppercase; letter-spacing:.08em; margin-bottom:4px; }
-    .bcb-vrd-stat-val { font-size:18px; font-weight:800; }
-    /* Comparacion card */
-    .compare-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:16px; }
-    @media (max-width:600px) { .compare-grid { grid-template-columns:1fr; } }
-    .compare-card { background:var(--bg2); border:2px solid var(--border); border-radius:16px; padding:20px; }
-    .compare-card.winner { border-color:var(--gold); background:linear-gradient(135deg,#fffbea,#fff8d6); }
-    .compare-card-tag { font-size:10px; font-weight:800; text-transform:uppercase; letter-spacing:.1em; margin-bottom:10px; display:flex; align-items:center; gap:6px; }
-    .compare-card-price { font-size:36px; font-weight:900; color:var(--navy); margin-bottom:4px; }
-    .compare-card-label { font-size:12px; color:var(--text2); margin-bottom:12px; }
-    .compare-card-detail { font-size:12px; color:var(--text2); line-height:1.7; }
-    .compare-card-detail strong { color:var(--text); }
-    /* Recomendacion */
-    .rec-box { border-radius:14px; padding:18px 20px; margin-bottom:16px; display:flex; align-items:flex-start; gap:14px; }
-    .rec-box.green  { background:#dcfce7; border:2px solid #86efac; }
-    .rec-box.yellow { background:#fef3c7; border:2px solid #fcd34d; }
-    .rec-box.red    { background:#fee2e2; border:2px solid #fca5a5; }
-    .rec-box-icon { font-size:28px; flex-shrink:0; }
-    .rec-box-title { font-size:15px; font-weight:800; margin-bottom:4px; }
-    .rec-box.green  .rec-box-title { color:#166534; }
-    .rec-box.yellow .rec-box-title { color:#92400e; }
-    .rec-box.red    .rec-box-title { color:#991b1b; }
-    .rec-box-desc { font-size:13px; color:var(--text2); line-height:1.6; }
-    /* VRD chart */
-    .vrd-chart-wrap { position:relative; height:300px; }
-    @media (max-width:480px) { .vrd-chart-wrap { height:200px; } }
-    /* ══ BANCOS PIZARRA ══ */
-    .bancos-section { margin-bottom:22px; }
-    .bancos-header { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px; margin-bottom:14px; }
-    .bancos-tco-pill { background:var(--navy); color:#fff; font-size:13px; font-weight:800; padding:6px 16px; border-radius:20px; display:flex; align-items:center; gap:6px; }
-    .bancos-tco-val { font-size:16px; font-weight:900; color:var(--gold); }
-    .bancos-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:12px; }
-    .banco-card { background:var(--bg2); border:1px solid var(--border); border-radius:12px; padding:16px 18px; transition:box-shadow .18s; }
-    .banco-card:hover { box-shadow:var(--shadow-lg); }
-    .banco-card-name { font-size:13px; font-weight:800; color:var(--navy); margin-bottom:12px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-    .banco-card-rates { display:flex; gap:8px; }
-    .banco-rate-box { flex:1; background:var(--bg3); border-radius:8px; padding:8px 10px; text-align:center; }
-    .banco-rate-label { font-size:9px; font-weight:700; text-transform:uppercase; letter-spacing:.07em; margin-bottom:3px; }
-    .banco-rate-label.buy  { color:var(--green); }
-    .banco-rate-label.sell { color:var(--red); }
-    .banco-rate-val { font-size:17px; font-weight:900; }
-    .banco-rate-val.buy  { color:var(--green); }
-    .banco-rate-val.sell { color:var(--red); }
-    .banco-rate-val.na   { color:var(--text3); font-size:13px; }
-    .bancos-note { font-size:11px; color:var(--text3); margin-top:10px; text-align:center; }
+    /* ══ LOADING ══ */
+    .loading { color: var(--text3); font-size: 13px; padding: 12px 0; }
+    .last-updated { font-size: 11px; color: var(--text3); margin-top: 6px; }
 
-    /* ══ UTILS ══ */
-    @media (max-width:600px) { .hide-mobile { display:none !important; } }
+    /* ══ RESPONSIVE ══ */
+    @media (max-width: 640px) {
+      .hero-cards { grid-template-columns: 1fr; }
+      .hero-title { font-size: 22px; }
+      .hero-rate-val { font-size: 24px; }
+      .header-inner { gap: 8px; }
+      nav { display: none; }
+      .section-head { flex-direction: column; align-items: flex-start; }
+    }
   </style>
 </head>
 <body>
@@ -389,1222 +208,277 @@
 <!-- TOP BAR -->
 <div class="topbar">
   <div class="live-dot"></div>
-  Cotización actualizada automáticamente · Datos P2P Bolivia
+  <span>Cotizaciones actualizadas cada hora · Fuente: DolarBlueBolivia + BCB</span>
 </div>
 
 <!-- HEADER -->
 <header>
   <div class="header-inner">
     <a class="logo" href="#">
-      <div class="logo-icon">₮</div>
+      <div class="logo-icon">$</div>
       <div class="logo-text">
-        <div class="main">USDT Bolivia</div>
-        <div class="sub">Univalle · Santa Cruz</div>
+        <div class="main">Dólar Bolivia</div>
+        <div class="sub">Tipo de cambio en tiempo real</div>
       </div>
     </a>
     <nav>
-      <a href="#cotizacion">Tipo de Cambio</a>
-      <a href="#calculator">Calculadora</a>
-      <a href="#platforms">P2P</a>
-      <a href="#bcbvrd">BCB / VRD</a>
-      <a href="#bancos">Pizarras</a>
-      <a href="#limits">Límites</a>
-      <a href="#chart">Gráfica</a>
+      <a href="#referencias">Referencias</a>
+      <a href="#bancos">Bancos</a>
     </nav>
-    <div class="header-date" id="headerDate">—</div>
-    <button class="hamburger" id="hamburgerBtn" onclick="toggleMenu()" aria-label="Menú">
-      <span></span><span></span><span></span>
-    </button>
+    <div class="header-time">
+      <div class="last-updated" id="headerDate">—</div>
+      <strong id="headerTime">—</strong>
+    </div>
   </div>
 </header>
 
-<!-- MOBILE NAV -->
-<div class="mobile-nav" id="mobileNav" onclick="closeMenu(event)">
-  <div class="mobile-nav-inner">
-    <a href="#cotizacion" onclick="closeMobileNav()">💱 Tipo de Cambio</a>
-    <a href="#calculator" onclick="closeMobileNav()">🧮 Calculadora</a>
-    <a href="#platforms"  onclick="closeMobileNav()">🏦 Plataformas P2P</a>
-    <a href="#bcbvrd"     onclick="closeMobileNav()">🏛️ BCB / VRD</a>
-    <a href="#bancos"     onclick="closeMobileNav()">🏦 Pizarras Bancarias</a>
-    <a href="#limits"     onclick="closeMobileNav()">⚠️ Límites Bancarios</a>
-    <a href="#chart"      onclick="closeMobileNav()">📈 Gráfica</a>
-  </div>
-</div>
-
-<!-- HERO SPLIT -->
-<div class="hero-section" id="cotizacion">
+<!-- HERO -->
+<section class="hero" id="referencias">
   <div class="hero-inner">
-    <!-- Left -->
-    <div class="hero-left">
-      <div class="hero-badge">📊 Proyecto Académico · Univalle Bolivia</div>
-      <div class="hero-title">Cotización<br><span>USDT / BOB</span></div>
-      <div class="hero-toggle">
-        <button class="hero-toggle-btn buy active" id="heroBtnBuy" onclick="setHeroMode('buy')">
-          <span class="arrow">↓</span> Compra
-        </button>
-        <button class="hero-toggle-btn sell" id="heroBtnSell" onclick="setHeroMode('sell')">
-          <span class="arrow">↑</span> Venta
-        </button>
+    <div class="hero-title">Tipo de Cambio — Dólar en Bolivia</div>
+    <div class="hero-sub">Las dos referencias que necesitás saber hoy, sin entrar a ningún banco</div>
+    <div class="hero-cards">
+
+      <!-- OFICIAL -->
+      <div class="hero-card hc-oficial">
+        <div class="hero-card-label"><span class="dot"></span> Tipo de cambio oficial</div>
+        <div class="hero-card-title">BCB — Tipo de Cambio Oficial (TCO)</div>
+        <div class="hero-rate-row">
+          <div class="hero-rate">
+            <div class="hero-rate-label">Compra</div>
+            <div class="hero-rate-val" id="oficialCompra">— <span>Bs</span></div>
+          </div>
+          <div class="hero-divider"></div>
+          <div class="hero-rate">
+            <div class="hero-rate-label">Venta</div>
+            <div class="hero-rate-val" id="oficialVenta">— <span>Bs</span></div>
+          </div>
+        </div>
+        <div class="hero-source">Banco Central de Bolivia · Unificado desde sep 2024</div>
       </div>
-      <div class="hero-big-price" id="heroBigPrice">—</div>
-      <div class="hero-price-label">
-        <span class="hero-price-pill" id="heroPriceLabel">Precio de Compra</span>
+
+      <!-- PARALELO -->
+      <div class="hero-card hc-paralelo">
+        <div class="hero-card-label"><span class="dot"></span> Mercado paralelo / libre</div>
+        <div class="hero-card-title">Dólar Libre — Mercado Informal</div>
+        <div class="hero-rate-row">
+          <div class="hero-rate">
+            <div class="hero-rate-label">Compra</div>
+            <div class="hero-rate-val" id="paraleloCompra">— <span>Bs</span></div>
+          </div>
+          <div class="hero-divider"></div>
+          <div class="hero-rate">
+            <div class="hero-rate-label">Venta</div>
+            <div class="hero-rate-val" id="paraleloVenta">— <span>Bs</span></div>
+          </div>
+        </div>
+        <div class="hero-source">Fuente: DolarBlueBolivia.click</div>
       </div>
-      <p class="hero-desc">Precio al que puedes operar USDT en plataformas P2P de criptomonedas en Bolivia, actualizado en tiempo real.</p>
-    </div>
-    <!-- Right: Rates Card -->
-    <div class="hero-right">
-      <div class="rates-card">
-        <div class="rates-card-header">
-          <span class="rates-card-title">COTIZACIÓN P2P BOLIVIA</span>
-          <span class="rates-card-badge" id="ratesCardBadge">EN VIVO</span>
-        </div>
-        <div class="rates-row">
-          <div class="rate-box">
-            <div class="rate-box-label buy-label">↓ Compra</div>
-            <div class="rate-box-val buy-val" id="heroCardBuy">—</div>
-            <div style="font-size:10px;color:var(--text3);margin-top:3px">El mercado te compra USDT</div>
-          </div>
-          <div class="rate-box">
-            <div class="rate-box-label sell-label">↑ Venta</div>
-            <div class="rate-box-val sell-val" id="heroCardSell">—</div>
-            <div style="font-size:10px;color:var(--text3);margin-top:3px">El mercado te vende USDT</div>
-          </div>
-        </div>
-        <div class="rates-divider"></div>
-        <div class="rates-card-header" style="border-top:none;border-bottom:1px solid var(--border)">
-          <span class="rates-card-title">BCB VALOR REFERENCIAL</span>
-          <span class="rates-card-badge" style="background:#fffbea;color:var(--gold2);border:1px solid #f5d87a">BCB</span>
-        </div>
-        <div class="rates-row">
-          <div class="rate-box">
-            <div class="rate-box-label buy-label">↓ Compra</div>
-            <div class="rate-box-val" id="heroCardBcbBuy" style="color:var(--text)">—</div>
-          </div>
-          <div class="rate-box">
-            <div class="rate-box-label sell-label">↑ Venta</div>
-            <div class="rate-box-val" id="heroCardBcbSell" style="color:var(--text)">—</div>
-          </div>
-        </div>
-        <div class="rates-footer">
-          <span class="rates-footer-text" id="ratesTime">—</span>
-          <button class="share-btn" onclick="sharePrice()">⬡ ¡Comparte!</button>
-        </div>
-      </div>
+
     </div>
   </div>
-</div>
+</section>
 
 <!-- MAIN -->
 <main>
 
-  <!-- CHART USDT -->
-  <div id="chart" class="card">
-    <div class="chart-header">
-      <div class="section-title" style="margin-bottom:0"><span>📈</span> Tendencia USDT/BOB</div>
-      <div class="chart-stats">
-        <div><div class="chart-stat-label">VENTA</div><div class="chart-stat-value" id="statVenta">—</div></div>
-        <div><div class="chart-stat-label">CAMBIO</div><div class="chart-stat-value" id="statCambio">—</div></div>
-        <div><div class="chart-stat-label">MÁX</div><div class="chart-stat-value" id="statMax">—</div></div>
-        <div><div class="chart-stat-label">MÍN</div><div class="chart-stat-value" id="statMin">—</div></div>
+  <!-- BANCO COMPARISON -->
+  <section id="bancos">
+    <div class="section-head">
+      <div>
+        <div class="section-title">🏦 Comparador de Bancos</div>
+        <div style="font-size:13px;color:var(--text2);margin-top:4px">¿En qué banco te conviene hoy? Ordenado de mejor a peor.</div>
       </div>
-    </div>
-    <div class="chart-tabs" style="margin-top:12px">
-      <button class="chart-tab" onclick="setChartRange('7D',this)">7D</button>
-      <button class="chart-tab active" onclick="setChartRange('30D',this)">30D</button>
-      <button class="chart-tab" onclick="setChartRange('90D',this)">90D</button>
-      <button class="chart-tab" onclick="setChartRange('180D',this)">180D</button>
-      <button class="chart-tab" onclick="setChartRange('1A',this)">1A</button>
-      <button class="chart-tab" onclick="setChartRange('MAX',this)">MAX</button>
-    </div>
-    <div class="chart-meta" id="chartMeta"></div>
-    <div class="chart-legend">
-      <div class="chart-legend-item"><div class="chart-legend-dot" style="background:var(--navy)"></div>Venta</div>
-      <div class="chart-legend-item"><div class="chart-legend-dot" style="background:rgba(0,48,135,.3)"></div>Compra</div>
-    </div>
-    <div class="chart-wrap"><canvas id="priceChart"></canvas></div>
-  </div>
-
-  <!-- BCB VRD SECTION -->
-  <div id="bcbvrd" class="bcb-vrd-section">
-    <div class="bcb-vrd-hero">
-      <div class="bcb-vrd-hero-inner">
-        <div class="bcb-vrd-hero-top">
-          <div>
-            <div class="bcb-vrd-hero-title">🏛️ Banco Central de Bolivia</div>
-            <div class="bcb-vrd-hero-name">Valor Referencial de Compra<br>del Dólar (VRD)</div>
-            <div class="bcb-vrd-hero-sub" id="vrdDate">Promedio ponderado del mercado bancario boliviano</div>
-          </div>
-          <div style="text-align:right">
-            <div style="font-size:11px;opacity:.55;margin-bottom:6px;font-weight:700;text-transform:uppercase;letter-spacing:.08em">VRD HOY</div>
-            <div class="bcb-vrd-price-big" id="vrdPriceBig">—</div>
-            <div class="bcb-vrd-price-sub">Bs por 1 USD · <span id="vrdRefreshLabel" style="color:rgba(255,255,255,.5)">—</span></div>
-          </div>
-        </div>
-        <div class="bcb-vrd-stats">
-          <div class="bcb-vrd-stat">
-            <div class="bcb-vrd-stat-label">Cotización Oficial</div>
-            <div class="bcb-vrd-stat-val" id="vrdMin">—</div>
-          </div>
-          <div class="bcb-vrd-stat">
-            <div class="bcb-vrd-stat-label">Máx del día</div>
-            <div class="bcb-vrd-stat-val" id="vrdMax">—</div>
-          </div>
-          <div class="bcb-vrd-stat">
-            <div class="bcb-vrd-stat-label">Transacciones</div>
-            <div class="bcb-vrd-stat-val" id="vrdNTrans">—</div>
-          </div>
-        </div>
+      <div class="toggle-wrap">
+        <button class="toggle-btn active" id="btnVenta" onclick="setMode('venta')">🛒 Quiero comprar dólares</button>
+        <button class="toggle-btn" id="btnCompra" onclick="setMode('compra')">💵 Quiero vender dólares</button>
       </div>
     </div>
 
-    <!-- COMPARACIÓN USD FÍSICO vs USDT -->
-    <div class="card" style="margin-bottom:14px">
-      <div class="section-title"><span>⚖️</span> USD Físico vs USDT Digital — ¿Cuál conviene más?</div>
-      <div class="compare-grid">
-        <div class="compare-card" id="comparePhysCard">
-          <div class="compare-card-tag" style="color:var(--navy)">🏦 USD Físico (Librecambista)</div>
-          <div class="compare-card-price" id="comparePhysPrice">—</div>
-          <div class="compare-card-label">Bs por 1 USD · VRD BCB</div>
-          <div class="compare-card-detail">
-            Precio promedio ponderado de las operaciones reales entre bancos y librecambistas en Bolivia.<br><br>
-            <strong>Ventajas:</strong> Efectivo en mano, sin apps, sin cuentas.<br>
-            <strong>Riesgo:</strong> Variación en el mercado, requiere contacto físico.
-          </div>
-        </div>
-        <div class="compare-card" id="compareUsdtCard">
-          <div class="compare-card-tag" style="color:#7C3AED">🔷 USDT Digital (P2P)</div>
-          <div class="compare-card-price" style="color:#7C3AED" id="compareUsdtPrice">—</div>
-          <div class="compare-card-label">Bs por 1 USDT · Precio Compra Binance P2P</div>
-          <div class="compare-card-detail">
-            Precio de compra en el mercado P2P de Binance — lo que pagas para adquirir 1 USDT con bolivianos.<br><br>
-            <strong>Ventajas:</strong> Transacciones digitales, disponible 24/7, envíos internacionales.<br>
-            <strong>Riesgo:</strong> Volatilidad crypto, requiere billetera digital.
-          </div>
-        </div>
+    <!-- BEST PRICE BANNER -->
+    <div class="best-banner" id="bestBanner" style="display:none">
+      <div class="best-banner-medal">🥇</div>
+      <div class="best-banner-body">
+        <div class="best-banner-label" id="bestLabel">Mejor precio para comprar dólares hoy</div>
+        <div class="best-banner-name" id="bestName">—</div>
+        <div class="best-banner-rate" id="bestRate">Venta: <strong id="bestRateVal">—</strong> Bs por dólar</div>
       </div>
-      <div id="recBox" class="rec-box yellow">
-        <div class="rec-box-icon" id="recIcon">⏳</div>
-        <div>
-          <div class="rec-box-title" id="recTitle">Calculando recomendación...</div>
-          <div class="rec-box-desc" id="recDesc">Comparando precios del mercado en tiempo real.</div>
-        </div>
-      </div>
-      <div style="font-size:11px;color:var(--text3);text-align:center">* Diferencia calculada en base al VRD BCB del día vs precio de compra Binance P2P (en vivo)</div>
     </div>
 
-    <!-- GRÁFICO VRD HISTÓRICO -->
-    <div class="card" style="padding:24px">
-      <div style="display:flex;flex-wrap:wrap;align-items:flex-start;justify-content:space-between;gap:14px;margin-bottom:18px">
-        <div>
-          <div class="section-title" style="margin-bottom:4px"><span>📊</span> Tendencia VRD BCB Histórico</div>
-          <div style="font-size:12px;color:var(--text3)">Valor Referencial de Compra · Fuente oficial: <strong style="color:var(--navy)">bcb.gob.bo</strong></div>
-        </div>
-        <div style="display:grid;grid-template-columns:repeat(4,auto);gap:20px;align-items:start">
-          <div style="text-align:center">
-            <div style="font-size:10px;font-weight:700;text-transform:uppercase;color:var(--text3);letter-spacing:.08em;margin-bottom:3px">VRD HOY</div>
-            <div style="font-size:16px;font-weight:900;color:var(--navy)" id="vrdStatHoy">—</div>
-          </div>
-          <div style="text-align:center">
-            <div style="font-size:10px;font-weight:700;text-transform:uppercase;color:var(--text3);letter-spacing:.08em;margin-bottom:3px">VARIACIÓN</div>
-            <div style="font-size:16px;font-weight:900" id="vrdStatCambio">—</div>
-          </div>
-          <div style="text-align:center">
-            <div style="font-size:10px;font-weight:700;text-transform:uppercase;color:var(--text3);letter-spacing:.08em;margin-bottom:3px">MÁX PERÍODO</div>
-            <div style="font-size:16px;font-weight:900;color:var(--green)" id="vrdStatMax">—</div>
-          </div>
-          <div style="text-align:center">
-            <div style="font-size:10px;font-weight:700;text-transform:uppercase;color:var(--text3);letter-spacing:.08em;margin-bottom:3px">MÍN PERÍODO</div>
-            <div style="font-size:16px;font-weight:900;color:var(--red)" id="vrdStatMin">—</div>
-          </div>
-        </div>
-      </div>
-      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:10px">
-        <div style="display:flex;gap:4px;flex-wrap:wrap" id="vrdChartTabs">
-          <button class="chart-tab" onclick="setVrdRange('7D',this)">7 días</button>
-          <button class="chart-tab" onclick="setVrdRange('15D',this)">15 días</button>
-          <button class="chart-tab" onclick="setVrdRange('30D',this)">30 días</button>
-          <button class="chart-tab active" onclick="setVrdRange('MAX',this)">Histórico</button>
-        </div>
-        <div style="display:flex;gap:16px">
-          <div style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text2);font-weight:600">
-            <div style="width:12px;height:3px;border-radius:2px;background:#1565C0"></div>VRD Compra BCB
-          </div>
-          <div style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text2);font-weight:600">
-            <div style="width:12px;height:3px;border-radius:2px;background:rgba(124,58,237,.7);border-top:2px dashed rgba(124,58,237,.7)"></div>USDT P2P
-          </div>
-        </div>
-      </div>
-      <div style="font-size:11px;color:var(--text3);margin-bottom:10px" id="vrdChartMeta"></div>
-      <div class="vrd-chart-wrap" style="height:280px"><canvas id="vrdChart"></canvas></div>
-      <div style="font-size:11px;color:var(--text3);margin-top:12px;text-align:center;padding-top:12px;border-top:1px solid var(--border)">
-        📌 Dato oficial publicado por el Banco Central de Bolivia · bcb.gob.bo · Se actualiza cada día hábil
-      </div>
+    <div class="banks-grid" id="banksGrid">
+      <div class="loading">Cargando cotizaciones bancarias…</div>
+    </div>
+  </section>
+
+  <!-- INFO CARDS -->
+  <div class="info-cards" id="infoCards">
+    <div class="info-card">
+      <div class="info-card-label">TCO BCB Unificado</div>
+      <div class="info-card-val" id="infoTco">— <span class="unit">Bs</span></div>
+      <div class="info-card-desc">Tipo de Cambio Oficial fijado por el Banco Central de Bolivia desde la unificación cambiaria.</div>
+    </div>
+    <div class="info-card">
+      <div class="info-card-label">Spread promedio bancos</div>
+      <div class="info-card-val" id="infoSpread">— <span class="unit">Bs</span></div>
+      <div class="info-card-desc">Diferencia promedio entre compra y venta entre los bancos con pizarra vigente.</div>
+    </div>
+    <div class="info-card">
+      <div class="info-card-label">Mejor banco — venta</div>
+      <div class="info-card-val" id="infoBestVenta">— <span class="unit">Bs</span></div>
+      <div class="info-card-desc">El precio más bajo al que podés comprar dólares físicos en ventanilla hoy.</div>
+    </div>
+    <div class="info-card">
+      <div class="info-card-label">Mejor banco — compra</div>
+      <div class="info-card-val" id="infoBestCompra">— <span class="unit">Bs</span></div>
+      <div class="info-card-desc">El precio más alto al que podés vender tus dólares en ventanilla hoy.</div>
     </div>
   </div>
 
-  <div class="alert-strip">
-    ℹ️ Los precios son referenciales del mercado P2P (Binance) via dolarbluebolivia.click. No constituyen asesoramiento financiero.
+  <!-- NOTA -->
+  <div style="margin-top:28px;padding:16px 20px;background:var(--bg2);border-radius:12px;border:1px solid var(--border);font-size:12px;color:var(--text2);line-height:1.6">
+    <strong style="color:var(--navy)">¿Qué significa compra y venta?</strong><br>
+    <strong>Compra</strong> es el precio al que el banco <em>te compra</em> los dólares (vos vendés, el banco compra — querés el más alto).<br>
+    <strong>Venta</strong> es el precio al que el banco <em>te vende</em> dólares (vos comprás, el banco vende — querés el más bajo).<br>
+    Las pizarras se actualizan cada hora desde la web de cada banco vía DolarBlueBolivia.click.
   </div>
-
-  <!-- CALCULATOR -->
-  <div id="calculator" class="card">
-    <div class="calc-header-row">
-      <div class="section-title" style="margin-bottom:0"><span>🧮</span> Calculadora de Divisas</div>
-      <div class="calc-rate-pill">Bs <span id="calcRatePill">—</span> · USDT P2P</div>
-    </div>
-    <div class="calc-wrapper" style="margin-top:16px">
-      <div class="calc-left">
-        <div>
-          <div class="calc-field-label">Desde</div>
-          <div class="calc-field-row">
-            <select class="calc-select" id="fromCurrency" onchange="onCurrencyChange()">
-              <option value="USDT">USDT</option>
-              <option value="BOB">BOB</option>
-            </select>
-            <input class="calc-input" type="number" id="fromAmount" placeholder="100" oninput="calculate()" />
-          </div>
-          <div class="calc-sublabel" id="fromSubLabel">Tether (USDT)</div>
-        </div>
-        <div class="calc-swap-wrap">
-          <button class="calc-swap" onclick="swapCurrencies()" title="Invertir">⇅</button>
-        </div>
-        <div>
-          <div class="calc-field-label">Hacia</div>
-          <div class="calc-field-row">
-            <select class="calc-select" id="toCurrency" onchange="onCurrencyChange()">
-              <option value="BOB">BOB</option>
-              <option value="USDT">USDT</option>
-            </select>
-            <input class="calc-input" type="number" id="toAmount" placeholder="0" oninput="calculateReverse()" />
-          </div>
-          <div class="calc-sublabel" id="toSubLabel">Boliviano</div>
-        </div>
-        <div class="calc-rate-note">1 USDT = <strong id="calcRateDisplay">—</strong></div>
-        <div class="calc-quick">
-          <button class="calc-quick-btn" onclick="setQuick(10)">10</button>
-          <button class="calc-quick-btn" onclick="setQuick(50)">50</button>
-          <button class="calc-quick-btn" onclick="setQuick(100)">100</button>
-          <button class="calc-quick-btn" onclick="setQuick(500)">500</button>
-        </div>
-        <button class="calc-convert-btn" onclick="doConvert()">Convertir</button>
-      </div>
-      <div class="calc-right">
-        <div class="calc-history-title">🕐 Historial de Conversiones</div>
-        <div class="calc-history-list" id="calcHistory">
-          <div class="calc-empty">Aún no hay conversiones</div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-
-  <!-- PLATFORMS CARDS -->
-  <div id="platforms" style="margin-bottom:18px">
-    <div class="plat-section-hero">
-      <div class="plat-section-icon">💲</div>
-      <h2 style="font-size:clamp(22px,4vw,30px);font-weight:900;color:var(--navy);margin-bottom:6px">Plataformas Recomendadas</h2>
-      <p style="font-size:13px;color:var(--text2)">Las mejores plataformas para comprar y vender USDT/USDC de forma segura y confiable</p>
-    </div>
-    <div class="plat-main-grid" id="platCardsGrid">
-      <div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--text3)">Cargando cotizaciones...</div>
-    </div>
-    <div class="otras-title">OTRAS PLATAFORMAS</div>
-    <div class="otras-grid" id="otrasGrid">
-      <div style="grid-column:1/-1;text-align:center;padding:20px;color:var(--text3)">Cargando...</div>
-    </div>
-  </div>
-
-  <!-- BANCOS PIZARRA -->
-  <div id="bancos" class="bancos-section card">
-    <div class="bancos-header">
-      <div class="section-title" style="margin-bottom:0"><span>🏦</span> Pizarras Bancarias — USD Físico</div>
-      <div class="bancos-tco-pill">TCO BCB: <span class="bancos-tco-val" id="bancosTcoVal">—</span> <span style="font-size:11px;opacity:.7">Bs</span></div>
-    </div>
-    <div class="bancos-grid" id="bancosGrid">
-      <div style="font-size:13px;color:var(--text3);padding:16px">Cargando cotizaciones bancarias...</div>
-    </div>
-    <div class="bancos-note">Pizarra publicada por cada banco en su web. Tipo de cambio para USD físico, no USDT. Fuente: <strong>dolarbluebolivia.click</strong></div>
-  </div>
-
-  <!-- LIMITS -->
-  <div id="limits" class="limits-section">
-    <div class="limits-hero">
-      <div class="limits-icon">⚖️</div>
-      <h2>Límites y Restricciones en Bolivia</h2>
-      <p>Información actualizada sobre límites de compra con tarjetas de débito al 21/04/2026</p>
-    </div>
-    <div class="limits-legend">
-      <div class="limits-legend-item"><div class="limits-legend-dot" style="background:#22c55e"></div>Sin restricciones</div>
-      <div class="limits-legend-item"><div class="limits-legend-dot" style="background:#f59e0b"></div>Moderadas</div>
-      <div class="limits-legend-item"><div class="limits-legend-dot" style="background:#ef4444"></div>Muy limitado</div>
-    </div>
-    <div class="limits-filters">
-      <button class="limits-filter-btn active" onclick="filterLimits('all',this)">Todos</button>
-      <button class="limits-filter-btn" onclick="filterLimits('ok',this)">Sin restricciones</button>
-      <button class="limits-filter-btn" onclick="filterLimits('mod',this)">Con restricciones</button>
-    </div>
-    <div class="limits-cards-grid" id="limitsGrid">
-      <div class="limit-card" data-status="ok">
-        <div class="limit-card-top"><div class="limit-card-name">Banco Mercantil Santa Cruz</div><div class="limit-card-badge ok">Sin restricciones</div></div>
-        <div class="limit-card-amount-row"><span class="limit-card-amount-label">Mensual:</span><span class="limit-card-amount-val">$7500</span></div>
-        <div class="limit-card-note">Tarjeta débito. Tipo de cambio referencial.</div>
-        <a class="limit-card-btn" href="https://www.bmsc.com.bo" target="_blank" rel="noopener">Ver Tarifario →</a>
-      </div>
-      <div class="limit-card" data-status="ok">
-        <div class="limit-card-top"><div class="limit-card-name">Banco de Crédito de Bolivia</div><div class="limit-card-badge ok">Sin restricciones</div></div>
-        <div class="limit-card-amount-row"><span class="limit-card-amount-label">Mensual:</span><span class="limit-card-amount-val">$5000</span></div>
-        <div class="limit-card-note">Tarjeta débito. Tipo de cambio referencial.</div>
-        <a class="limit-card-btn" href="https://www.bcb.com.bo" target="_blank" rel="noopener">Ver Tarifario →</a>
-      </div>
-      <div class="limit-card" data-status="ok">
-        <div class="limit-card-top"><div class="limit-card-name">Banco Nacional de Bolivia</div><div class="limit-card-badge ok">Sin restricciones</div></div>
-        <div class="limit-card-amount-row"><span class="limit-card-amount-label">Mensual:</span><span class="limit-card-amount-val">$500</span></div>
-        <div class="limit-card-note">Tarjeta débito. Tipo de cambio referencial.</div>
-        <a class="limit-card-btn" href="https://www.bnb.com.bo" target="_blank" rel="noopener">Ver Tarifario →</a>
-      </div>
-      <div class="limit-card" data-status="ok">
-        <div class="limit-card-top"><div class="limit-card-name">Banco Sol</div><div class="limit-card-badge ok">Sin restricciones</div></div>
-        <div class="limit-card-amount-row"><span class="limit-card-amount-label">Mensual:</span><span class="limit-card-amount-val">$500</span></div>
-        <div class="limit-card-note">Tarjeta débito. Tipo de cambio referencial.</div>
-        <a class="limit-card-btn" href="https://www.bancosol.com.bo" target="_blank" rel="noopener">Ver Tarifario →</a>
-      </div>
-      <div class="limit-card" data-status="ok">
-        <div class="limit-card-top"><div class="limit-card-name">Banco Económico</div><div class="limit-card-badge ok">Sin restricciones</div></div>
-        <div class="limit-card-amount-row"><span class="limit-card-amount-label">Mensual:</span><span class="limit-card-amount-val">$500</span></div>
-        <div class="limit-card-note">Tarjeta débito. Tipo de cambio referencial.</div>
-        <a class="limit-card-btn" href="https://www.bancoeconomico.com.bo" target="_blank" rel="noopener">Ver Tarifario →</a>
-      </div>
-      <div class="limit-card" data-status="ok">
-        <div class="limit-card-top"><div class="limit-card-name">Banco Ganadero</div><div class="limit-card-badge ok">Sin restricciones</div></div>
-        <div class="limit-card-amount-row"><span class="limit-card-amount-label">Mensual:</span><span class="limit-card-amount-val">$500</span></div>
-        <div class="limit-card-note">Tarjeta débito. Tipo de cambio referencial.</div>
-        <a class="limit-card-btn" href="https://www.bg.com.bo" target="_blank" rel="noopener">Ver Tarifario →</a>
-      </div>
-      <div class="limit-card" data-status="ok">
-        <div class="limit-card-top"><div class="limit-card-name">Banco FIE</div><div class="limit-card-badge ok">Sin restricciones</div></div>
-        <div class="limit-card-amount-row"><span class="limit-card-amount-label">Mensual:</span><span class="limit-card-amount-val">$500</span></div>
-        <div class="limit-card-note">Tarjeta débito. Tipo de cambio referencial.</div>
-        <a class="limit-card-btn" href="https://www.bancofie.com.bo" target="_blank" rel="noopener">Ver Tarifario →</a>
-      </div>
-      <div class="limit-card" data-status="ok">
-        <div class="limit-card-top"><div class="limit-card-name">Banco Unión</div><div class="limit-card-badge ok">Sin restricciones</div></div>
-        <div class="limit-card-amount-row"><span class="limit-card-amount-label">Mensual:</span><span class="limit-card-amount-val">$500</span></div>
-        <div class="limit-card-note">Tarjeta débito. Tipo de cambio referencial.</div>
-        <a class="limit-card-btn" href="https://www.bancounion.com.bo" target="_blank" rel="noopener">Ver Tarifario →</a>
-      </div>
-      <div class="limit-card" data-status="ok">
-        <div class="limit-card-top"><div class="limit-card-name">BISA</div><div class="limit-card-badge ok">Sin restricciones</div></div>
-        <div class="limit-card-amount-row"><span class="limit-card-amount-label">Mensual:</span><span class="limit-card-amount-val">$500</span></div>
-        <div class="limit-card-note">Tarjeta débito. Tipo de cambio referencial.</div>
-        <a class="limit-card-btn" href="https://www.bisa.com.bo" target="_blank" rel="noopener">Ver Tarifario →</a>
-      </div>
-      <div class="limit-card" data-status="ok">
-        <div class="limit-card-top"><div class="limit-card-name">Banco Fortaleza</div><div class="limit-card-badge ok">Sin restricciones</div></div>
-        <div class="limit-card-amount-row"><span class="limit-card-amount-label">Mensual:</span><span class="limit-card-amount-val">$500</span></div>
-        <div class="limit-card-note">Tarjeta débito. Por confirmar.</div>
-        <a class="limit-card-btn" href="https://www.fortaleza.com.bo" target="_blank" rel="noopener">Ver Tarifario →</a>
-      </div>
-    </div>
-    <div class="limits-note">⚠️ Estos límites son referenciales y pueden cambiar sin previo aviso. Verifica siempre con tu banco antes de operar.</div>
-  </div>
-
 
 </main>
 
 <!-- FOOTER -->
 <footer>
-  <div class="footer-inner">
-    <div class="footer-bcb">
-      <div>
-        <div class="footer-bcb-title">BCB Oficial</div>
-        <div class="footer-bcb-values">Compra: <strong id="footerBcbBuy">—</strong> · Venta: <strong id="footerBcbSell">—</strong></div>
-      </div>
-      <div>
-        <div class="footer-bcb-title">Blue / Referencial</div>
-        <div class="footer-bcb-values">Compra: <strong id="footerBcbRefBuy">—</strong> · Venta: <strong id="footerBcbRefSell">—</strong></div>
-      </div>
-      <div class="footer-bcb-date" id="footerBcbDate">—<br>Fuente: Banco Central de Bolivia</div>
-    </div>
-    <div class="footer-top">
-      <div>
-        <span class="footer-logo-text">USDT <span>Bolivia</span> · Univalle</span>
-        <p class="footer-desc">Plataforma informativa de cotizaciones USDT/BOB basadas en mercados P2P. Proyecto académico de la Universidad del Valle, Santa Cruz.</p>
-      </div>
-      <div class="footer-col">
-        <div class="footer-col-title">Información</div>
-        <ul>
-          <li><a href="#platforms">Fuentes de Datos</a></li>
-          <li><a href="#" onclick="openModal('modalSobre');return false">Sobre Nosotros</a></li>
-        </ul>
-      </div>
-      <div class="footer-col">
-        <div class="footer-col-title">Legal</div>
-        <ul>
-          <li><a href="#" onclick="openModal('modalTerminos');return false">Términos de Uso</a></li>
-          <li><a href="#" onclick="openModal('modalPrivacidad');return false">Privacidad</a></li>
-          <li><a href="#" onclick="openModal('modalAviso');return false">Aviso Legal</a></li>
-        </ul>
-      </div>
-      <div class="footer-col">
-        <div class="footer-col-title">Plataformas</div>
-        <ul>
-          <li><a href="https://p2p.binance.com/" target="_blank" rel="noopener">Binance P2P</a></li>
-          <li><a href="https://www.airtm.com/" target="_blank" rel="noopener">Airtm</a></li>
-          <li><a href="https://eldorado.io/" target="_blank" rel="noopener">El Dorado</a></li>
-          <li><a href="https://takenos.com/" target="_blank" rel="noopener">Takenos</a></li>
-          <li><a href="https://wallbit.io/" target="_blank" rel="noopener">Wallbit</a></li>
-        </ul>
-      </div>
-    </div>
-    <div class="footer-legal"><strong style="color:rgba(255,255,255,.8)">Aviso Legal:</strong> Las cotizaciones son precios referenciales de mercados P2P. No constituyen asesoramiento financiero. Proyecto académico sin fines de lucro.</div>
-    <div class="footer-bottom">
-      <span class="footer-copy">© 2026 USDT Bolivia - Univalle. Todos los derechos reservados.</span>
-      <span class="footer-uni">Universidad del Valle · Santa Cruz, Bolivia</span>
-    </div>
-  </div>
+  <strong>Dólar Bolivia</strong> · Datos de DolarBlueBolivia.click y Banco Central de Bolivia (BCB) ·
+  Proyecto académico — Universidad del Valle · Actualización automática cada hora
 </footer>
 
-<!-- MODALES -->
-<div class="modal-overlay" id="modalSobre" onclick="closeOnOverlay(event,'modalSobre')">
-  <div class="modal">
-    <button class="modal-close" onclick="closeModal('modalSobre')">✕</button>
-    <div class="modal-badge">Proyecto Académico</div>
-    <h2>Sobre Nosotros</h2>
-    <p>Somos una plataforma informativa especializada en proporcionar datos precisos y en tiempo real del mercado cambiario boliviano. Creemos que la información económica confiable es la base para tomar decisiones financieras inteligentes.</p>
-    <h3>Nuestra Misión</h3>
-    <p>Proporcionar información precisa, actualizada y accesible sobre el mercado cambiario boliviano, especialmente del dólar paralelo o <em>"blue"</em>. Buscamos empoderar a los ciudadanos con conocimientos económicos que les permitan tomar decisiones financieras acertadas en su día a día.</p>
-    <h3>Nuestra Visión</h3>
-    <p>Ser la fuente más confiable y accesible de información económica en Bolivia en temas de cambio de divisas. Contribuir al desarrollo financiero de la comunidad mediante transparencia, objetividad y veracidad en todos nuestros contenidos.</p>
-    <div class="project-box">
-      <p><strong>Proyecto Académico — Universidad del Valle (Univalle)</strong><br><br>
-      Este sitio es el resultado de un proyecto de investigación y desarrollo de un grupo de estudiantes de la <strong>Universidad del Valle, sede Santa Cruz de la Sierra</strong>, concebido como una herramienta educativa y de utilidad pública para la comunidad boliviana, bajo la guía y supervisión del docente <strong>Lic. Javier Prado</strong>.<br><br>
-      Nuestro objetivo fue aplicar conocimientos de tecnología, análisis de datos y desarrollo web para crear una solución real que responda a una necesidad informativa concreta de los bolivianos.</p>
-    </div>
-  </div>
-</div>
-
-<div class="modal-overlay" id="modalTerminos" onclick="closeOnOverlay(event,'modalTerminos')">
-  <div class="modal">
-    <button class="modal-close" onclick="closeModal('modalTerminos')">✕</button>
-    <div class="modal-badge">Legal</div>
-    <h2>Términos y Condiciones</h2>
-    <p>Estos términos rigen el uso de nuestro sitio web y servicios.</p>
-    <h3>Aceptación de Términos</h3>
-    <p>Al acceder y utilizar <strong>USDT Bolivia - Univalle</strong>, usted acepta cumplir con estos términos. Si no está de acuerdo, le recomendamos no utilizar este sitio.</p>
-    <h3>Lo que Ofrecemos</h3>
-    <ul><li>Información referencial de cotizaciones</li><li>Datos del mercado paralelo de divisas</li><li>Herramientas de cálculo básicas</li><li>Análisis de tendencias históricas</li></ul>
-    <h3>Lo que NO Hacemos</h3>
-    <ul><li>Servicios de cambio de divisas</li><li>Intermediación financiera</li><li>Asesoramiento financiero personalizado</li><li>Garantías sobre los precios mostrados</li></ul>
-    <h3>Descargo de Responsabilidad</h3>
-    <p>Todo el contenido es únicamente para fines informativos. No garantizamos la exactitud de los datos. Cualquier decisión financiera basada en este sitio es bajo su propia responsabilidad.</p>
-  </div>
-</div>
-
-<div class="modal-overlay" id="modalPrivacidad" onclick="closeOnOverlay(event,'modalPrivacidad')">
-  <div class="modal">
-    <button class="modal-close" onclick="closeModal('modalPrivacidad')">✕</button>
-    <div class="modal-badge">Legal</div>
-    <h2>Política de Privacidad</h2>
-    <h3>Introducción</h3>
-    <p>En <strong>USDT Bolivia - Univalle</strong>, respetamos tu privacidad. Esta política describe cómo tratamos la información cuando usas nuestro sitio.</p>
-    <h3>Datos que Recopilamos</h3>
-    <p>Este sitio es de carácter informativo y <strong>no recopila datos personales</strong>. No requerimos registro ni inicio de sesión.</p>
-    <h3>Cookies y Analítica</h3>
-    <p>Podemos usar herramientas de analítica anónimas para mejorar la experiencia. Estos datos son completamente anónimos.</p>
-  </div>
-</div>
-
-<div class="modal-overlay" id="modalAviso" onclick="closeOnOverlay(event,'modalAviso')">
-  <div class="modal">
-    <button class="modal-close" onclick="closeModal('modalAviso')">✕</button>
-    <div class="modal-badge">Legal</div>
-    <h2>Aviso Legal</h2>
-    <p>Las cotizaciones mostradas son precios referenciales de plataformas P2P de criptomonedas. <strong>No constituyen asesoramiento financiero.</strong></p>
-    <p>Este sitio es un proyecto académico de la Universidad del Valle sin fines de lucro. Los datos provienen de fuentes públicas y pueden variar. Siempre verifique con la plataforma de su preferencia antes de operar.</p>
-  </div>
-</div>
-
 <script>
-  let pricesData = null;
-  let chartInstance = null;
-  let currentRange = '30D';
-  let heroMode = 'buy';
-  let calcHistory = [];
+const DATA_URL = 'data/prices.json';
+let currentMode = 'venta'; // 'venta' = quiero COMPRAR dólares (busco menor precio venta) | 'compra' = quiero VENDER (busco mayor precio compra)
 
-  // ── MENU MÓVIL ──
-  function toggleMenu() { document.getElementById('mobileNav').classList.toggle('open'); }
-  function closeMenu(e) { if (e.target === document.getElementById('mobileNav')) closeMobileNav(); }
-  function closeMobileNav() { document.getElementById('mobileNav').classList.remove('open'); }
+function fmt(v, dec = 2) {
+  if (v == null || v === '' || isNaN(parseFloat(v))) return '—';
+  return parseFloat(v).toFixed(dec);
+}
 
-  // ── MODALES ──
-  function openModal(id)  { document.getElementById(id).classList.add('open'); document.body.style.overflow='hidden'; }
-  function closeModal(id) { document.getElementById(id).classList.remove('open'); document.body.style.overflow=''; }
-  function closeOnOverlay(e, id) { if (e.target===document.getElementById(id)) closeModal(id); }
+function setMode(mode) {
+  currentMode = mode;
+  document.getElementById('btnVenta').classList.toggle('active', mode === 'venta');
+  document.getElementById('btnCompra').classList.toggle('active', mode === 'compra');
+  if (window._lastBancos) renderBanks(window._lastBancos);
+}
 
-  // ── API DolarBlueBolivia ──
-  const DBB = 'https://api.dolarbluebolivia.click';
+function renderBanks(bancos) {
+  window._lastBancos = bancos;
+  const grid = document.getElementById('banksGrid');
+  const banner = document.getElementById('bestBanner');
 
-  async function dbbGet(endpoint) {
-    try {
-      const r = await fetch(DBB + endpoint);
-      const j = await r.json();
-      return j.data || j;
-    } catch(e) { return null; }
+  if (!bancos || !bancos.length) {
+    grid.innerHTML = '<div class="bank-no-data">No hay pizarras bancarias disponibles por el momento.</div>';
+    banner.style.display = 'none';
+    return;
   }
 
-  async function loadPrices() {
-    let base = {};
-    // 1. Cargar JSON guardado como base (historial + fallback)
-    try { const r = await fetch('data/prices.json?v='+Date.now()); base = await r.json(); } catch(e) {}
-
-    // Renderizar inmediatamente con datos guardados para que el gráfico aparezca al instante
-    if (base.history?.length) { pricesData = base; renderAll(); }
-
-    // 2. Llamar todos los endpoints en paralelo
-    try {
-      const [official, eldorado, takenos, wallbit, airtm, bybit, saldoar, bancos] = await Promise.allSettled([
-        dbbGet('/v1/officialRate'),
-        dbbGet('/v1/eldorado'),
-        dbbGet('/v1/takenos'),
-        dbbGet('/v1/wallbit'),
-        dbbGet('/v1/airtm'),
-        dbbGet('/v1/p2p/bybit'),
-        dbbGet('/v1/saldoar'),
-        dbbGet('/v1/bancos'),
-      ]);
-
-      const val = r => r.status === 'fulfilled' ? r.value : null;
-      const live    = val(official);
-      const dEld    = val(eldorado);
-      const dTak    = val(takenos);
-      const dWall   = val(wallbit);
-      const dAir    = val(airtm);
-      const dBybit  = val(bybit);
-      const dSaldo  = val(saldoar);
-      const dBancos = val(bancos);
-
-      // Binance P2P (blue = mercado paralelo)
-      if (live?.blue) {
-        base.binance = { buy: live.blue.buy, sell: live.blue.sell, available: true };
-      }
-
-      // Plataformas con datos reales
-      if (dEld?.buy  && dEld?.sell)
-        base.eldorado = { buy: dEld.buy,  sell: dEld.sell,  available: true };
-      if (dTak?.buy  && dTak?.sell)
-        base.takenos  = { buy: dTak.buy,  sell: dTak.sell,  available: true };
-      if (dWall?.buy && dWall?.sell)
-        base.wallbit  = { buy: dWall.buy, sell: dWall.sell, available: true };
-      if (dAir?.addValue && dAir?.withdrawValue)
-        base.airtm    = { buy: dAir.addValue, sell: dAir.withdrawValue, available: true };
-      if (dBybit?.buy && parseFloat(dBybit.buy) > 1)
-        base.bybit    = { buy: dBybit.buy, sell: dBybit.sell, available: true };
-      if (dSaldo?.buy && dSaldo?.sell)
-        base.saldoar  = { buy: dSaldo.buy, sell: dSaldo.sell, available: true };
-
-      // BCB oficial + bancos pizarra
-      const tco = dBancos?.tco?.valor || base.bcb?.tco || null;
-      if (live?.official) {
-        base.bcb = {
-          tco:             tco,
-          officialBuy:     live.official.buy,
-          officialSell:    live.official.sell,
-          referentialBuy:  live.blue?.buy  || base.bcb?.referentialBuy,
-          referentialSell: live.blue?.sell || base.bcb?.referentialSell,
-        };
-      } else if (tco) {
-        base.bcb = base.bcb || {};
-        base.bcb.tco = tco;
-      }
-      if (dBancos?.bancos) {
-        base.bancos = dBancos.bancos
-          .filter(b => b.pizarra?.estado === 'vigente')
-          .map(b => ({ id: b.id, nombre: b.nombre, web: b.web,
-                       compra: b.pizarra.compra, venta: b.pizarra.venta,
-                       fecha: b.pizarra.fecha }));
-      }
-
-      // Actualizar historial con precio del día
-      const today = new Date().toISOString().slice(0,10);
-      if (live?.blue && base.history) {
-        base.history = base.history.filter(h=>h.date!==today);
-        base.history.push({ date:today, buy:live.blue.buy, sell:live.blue.sell });
-        base.history.sort((a,b)=>a.date.localeCompare(b.date));
-      }
-    } catch(e) { console.warn('API en vivo no disponible:', e.message); }
-
-    const d = new Date();
-    const dias  = ['domingo','lunes','martes','miércoles','jueves','viernes','sábado'];
-    const meses = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
-    base.displayDate = `${dias[d.getDay()]} ${d.getDate()} de ${meses[d.getMonth()]}, ${d.getFullYear()}`;
-    pricesData = base;
-    renderAll();
-  }
-
-  // ── LÍMITES FILTER ──
-  function filterLimits(filter, btn) {
-    document.querySelectorAll('.limits-filter-btn').forEach(b=>b.classList.remove('active'));
-    btn.classList.add('active');
-    document.querySelectorAll('#limitsGrid .limit-card').forEach(card => {
-      const s = card.dataset.status;
-      if (filter==='all') card.style.display='';
-      else if (filter==='ok') card.style.display = s==='ok' ? '' : 'none';
-      else card.style.display = s!=='ok' ? '' : 'none';
+  // Sort
+  const sorted = [...bancos]
+    .filter(b => currentMode === 'venta' ? b.venta != null : b.compra != null)
+    .sort((a, b) => {
+      if (currentMode === 'venta') return parseFloat(a.venta) - parseFloat(b.venta); // menor venta = mejor para comprador
+      return parseFloat(b.compra) - parseFloat(a.compra); // mayor compra = mejor para vendedor
     });
-  }
 
-  function platCard({ name, domain, logo, gradient, desc, features, data, btn1Text, btn2Text, btn2Color, url, time }) {
-    if (!data?.available) return '';
-    const buy = parseFloat(data.buy), sell = parseFloat(data.sell);
-    if (isNaN(buy) || isNaN(sell)) return '';
-    const avg = ((buy + sell) / 2).toFixed(2);
-    return `
-    <div class="plat-big-card" style="background:${gradient}">
-      <div class="plat-big-partner">☆ Partner Verificado</div>
-      <div class="plat-big-header">
-        <div class="plat-big-logo">${logo}</div>
-        <div>
-          <div class="plat-big-name">${name}</div>
-          <div class="plat-big-stars">★★★★★ 5.0</div>
+  // Also include banks with no relevant rate at the end
+  const missing = bancos.filter(b => currentMode === 'venta' ? b.venta == null : b.compra == null);
+  const all = [...sorted, ...missing];
+
+  const medals = ['🥇','🥈','🥉'];
+  const rankClasses = ['rank1','rank2','rank3'];
+
+  grid.innerHTML = all.map((b, i) => {
+    const compra = fmt(b.compra);
+    const venta  = fmt(b.venta);
+    const rank   = i < 3 && (currentMode === 'venta' ? b.venta != null : b.compra != null) ? i : -1;
+    return `<div class="bank-card ${rank >= 0 ? rankClasses[rank] : ''}">
+      ${rank >= 0 ? `<div class="bank-rank-badge">${medals[rank]}</div>` : `<div class="bank-rank-badge" style="font-size:12px;color:var(--text3)">#${i+1}</div>`}
+      <div class="bank-card-name">${b.nombre}</div>
+      <div class="bank-card-rates">
+        <div class="bank-rate-box">
+          <div class="bank-rate-label buy">Compra</div>
+          <div class="bank-rate-val ${compra === '—' ? 'na' : ''}">${compra === '—' ? '—' : `${compra} <span class="unit">Bs</span>`}</div>
         </div>
-      </div>
-      <div class="plat-big-price-box">
-        <div class="plat-big-price-label">
-          <span>⬡ Cotización ${name}</span>
-          <span class="plat-big-price-live">En vivo</span>
+        <div class="bank-rate-box">
+          <div class="bank-rate-label sell">Venta</div>
+          <div class="bank-rate-val ${venta === '—' ? 'na' : ''}">${venta === '—' ? '—' : `${venta} <span class="unit">Bs</span>`}</div>
         </div>
-        <div class="plat-big-price-val">Bs ${avg}</div>
-        <div class="plat-big-price-sub">
-          <span>Promedio compra/venta</span>
-          <span style="font-weight:700">Act: ${time}</span>
-        </div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:10px">
-          <div style="background:rgba(255,255,255,.1);border-radius:8px;padding:8px 10px;text-align:center">
-            <div style="font-size:10px;opacity:.7;font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-bottom:2px">↓ Compra</div>
-            <div style="font-size:18px;font-weight:900">Bs ${buy.toFixed(2)}</div>
-            <div style="font-size:10px;opacity:.6">Tú compras USDT</div>
-          </div>
-          <div style="background:rgba(255,255,255,.1);border-radius:8px;padding:8px 10px;text-align:center">
-            <div style="font-size:10px;opacity:.7;font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-bottom:2px">↑ Venta</div>
-            <div style="font-size:18px;font-weight:900">Bs ${sell.toFixed(2)}</div>
-            <div style="font-size:10px;opacity:.6">Tú vendes USDT</div>
-          </div>
-        </div>
-      </div>
-      <div class="plat-big-desc">${desc}</div>
-      <ul class="plat-big-features">${features.map(f=>`<li>${f}</li>`).join('')}</ul>
-      <div class="plat-big-btns">
-        <a class="plat-big-btn-sec" href="${url}" target="_blank" rel="noopener">ⓘ Ver detalles<br><small>Cómo funciona</small></a>
-        <a class="plat-big-btn-main" href="${url}" target="_blank" rel="noopener" style="color:${btn2Color}">+ ${btn2Text} ›<br><small style="font-weight:600;opacity:.7">Protege tus ahorros</small></a>
       </div>
     </div>`;
-  }
+  }).join('');
 
-  function otraCard({ name, logo, gradient, desc, features, url }) {
-    return `
-    <div class="otra-card" style="background:${gradient}">
-      <div class="otra-card-logo">${logo}</div>
-      <div class="otra-card-name">${name}</div>
-      <div class="otra-card-stars">★★★★★ 5.0</div>
-      <div class="otra-card-desc">${desc}</div>
-      <ul class="otra-card-feats">${features.map(f=>`<li>${f}</li>`).join('')}</ul>
-      <a class="otra-card-btn" href="${url}" target="_blank" rel="noopener">Abrir Plataforma ↗</a>
-    </div>`;
-  }
-
-  function renderAll() {
-    if (!pricesData) return;
-
-    // El gráfico siempre se renderiza primero, de forma independiente
-    try { renderChart(currentRange); } catch(e) { console.error('Chart error:', e); }
-
-    const { binance, airtm, eldorado, takenos, wallbit, bybit, saldoar, bcb, bancos, displayDate } = pricesData;
-
-    document.getElementById('headerDate').textContent = displayDate || '';
-
-    // Hero
-    updateHero();
-
-    // Hero rates card
-    if (binance) {
-      const bBuy  = parseFloat(binance.buy),  bSell = parseFloat(binance.sell);
-      document.getElementById('heroCardBuy').textContent  = 'Bs ' + (isNaN(bBuy)  ? binance.buy  : bBuy.toFixed(2));
-      document.getElementById('heroCardSell').textContent = 'Bs ' + (isNaN(bSell) ? binance.sell : bSell.toFixed(2));
-    }
-    if (bcb) {
-      const tcoVal = bcb.tco || bcb.officialBuy || bcb.referentialBuy;
-      document.getElementById('heroCardBcbBuy').textContent  = 'Bs ' + (bcb.referentialBuy  || tcoVal || '—');
-      document.getElementById('heroCardBcbSell').textContent = 'Bs ' + (bcb.referentialSell || tcoVal || '—');
-    }
-    const now = new Date();
-    document.getElementById('ratesTime').textContent = now.toLocaleDateString('es-BO') + ', ' + now.toLocaleTimeString('es-BO',{hour:'2-digit',minute:'2-digit'});
-
-    // Hora de actualización
-    const timeStr = now.toLocaleTimeString('es-BO',{hour:'2-digit',minute:'2-digit'}) + ' p.m.';
-
-    // Platform big cards
-    document.getElementById('platCardsGrid').innerHTML = [
-      platCard({ name:'Airtm', logo:'AIRTM', gradient:'linear-gradient(135deg,#1565C0 0%,#1976D2 60%,#0D47A1 100%)',
-        desc:'Plataforma global para intercambio de divisas y criptomonedas con alcance mundial.',
-        features:['Fácil de usar','Soporte 24/7','Múltiples métodos'],
-        data:airtm, btn1Text:'Ver detalles', btn2Text:'Crear cuenta', btn2Color:'#1565C0', url:'https://www.airtm.com/', time:timeStr }),
-      platCard({ name:'Eldorado', logo:'🏅', gradient:'linear-gradient(135deg,#E65100 0%,#F57C00 60%,#FF8F00 100%)',
-        desc:'La SuperApp de Stablecoins para Latinoamérica con +70 métodos de pago locales.',
-        features:['+70 métodos de pago','Sin comisiones','P2P Trading'],
-        data:eldorado, btn1Text:'Ver detalles', btn2Text:'Crear cuenta', btn2Color:'#E65100', url:'https://eldorado.io/', time:timeStr }),
-      platCard({ name:'Wallbit', logo:'🔷', gradient:'linear-gradient(135deg,#1A237E 0%,#283593 60%,#3949AB 100%)',
-        desc:'Exchange confiable de criptomonedas con las mejores tasas USDT/BOB en Bolivia.',
-        features:['Tasas competitivas','Verificado','Soporte local'],
-        data:wallbit, btn1Text:'Ver detalles', btn2Text:'Crear Cuenta', btn2Color:'#1A237E', url:'https://wallbit.io/', time:timeStr }),
-      platCard({ name:'Takenos', logo:'☁️', gradient:'linear-gradient(135deg,#4A148C 0%,#6A1B9A 60%,#7B1FA2 100%)',
-        desc:'Recibe pagos internacionales en dólares o criptomonedas al instante con Takenos.',
-        features:['Pagos instantáneos','Sin fronteras','Múltiples divisas'],
-        data:takenos, btn1Text:'Ver detalles', btn2Text:'Crear Cuenta', btn2Color:'#4A148C', url:'https://takenos.com/', time:timeStr }),
-    ].join('');
-
-    // Otras plataformas (coloridas)
-    document.getElementById('otrasGrid').innerHTML = [
-      otraCard({ name:'SaldoAr',   logo:'💜', gradient:'linear-gradient(135deg,#6B21A8,#7C3AED)',
-        desc:'Plataforma argentina para comprar y vender USDT con pesos y otras divisas.',
-        features:['Interfaz simple','Transacciones rápidas','Soporte regional'], url:'https://saldoar.com/' }),
-      otraCard({ name:'Bitget P2P', logo:'🔵', gradient:'linear-gradient(135deg,#0284C7,#0EA5E9)',
-        desc:'Exchange global con servicio P2P para comprar USDT con moneda local.',
-        features:['Trading avanzado','P2P seguro','Alta liquidez'], url:'https://www.bitget.com/' }),
-      otraCard({ name:'Bybit P2P',  logo:'🟠', gradient:'linear-gradient(135deg,#C2410C,#EA580C)',
-        desc:'Plataforma de trading con P2P y amplia variedad de métodos de pago.',
-        features:['Opciones variadas','Trading profesional','Seguridad robusta'], url:'https://www.bybit.com/' }),
-      otraCard({ name:'Binance P2P',logo:'🟡', gradient:'linear-gradient(135deg,#B45309,#D97706)',
-        desc:'El exchange de criptomonedas más grande del mundo con servicio P2P.',
-        features:['Bajas comisiones','Alta liquidez','Seguridad avanzada'], url:'https://p2p.binance.com/' }),
-    ].join('');
-
-    // BCB
-    if (bcb) {
-      const tcoVal = bcb.tco || bcb.officialBuy;
-      document.getElementById('bcbOfficialBuy').textContent   = (bcb.officialBuy  || tcoVal || '—') + ' Bs';
-      document.getElementById('bcbOfficialSell').textContent  = (bcb.officialSell || tcoVal || '—') + ' Bs';
-      document.getElementById('bcbRefBuy').textContent        = (bcb.referentialBuy  || tcoVal || '—') + ' Bs';
-      document.getElementById('bcbRefSell').textContent       = (bcb.referentialSell || tcoVal || '—') + ' Bs';
-      document.getElementById('bcbDate').textContent = 'Cotización: '+(displayDate||'')+' · Fuente: Banco Central de Bolivia';
-      document.getElementById('footerBcbBuy').textContent     = (tcoVal || '—') + ' Bs';
-      document.getElementById('footerBcbSell').textContent    = (tcoVal || '—') + ' Bs';
-      document.getElementById('footerBcbRefBuy').textContent  = (bcb.referentialBuy  || tcoVal || '—') + ' Bs';
-      document.getElementById('footerBcbRefSell').textContent = (bcb.referentialSell || tcoVal || '—') + ' Bs';
-      document.getElementById('footerBcbDate').innerHTML = (displayDate||'')+'<br>Fuente: Banco Central de Bolivia';
-    }
-
-    // Pizarras bancarias
-    if (bancos && bancos.length) {
-      const tco = bcb?.tco || null;
-      if (tco) document.getElementById('bancosTcoVal').textContent = parseFloat(tco).toFixed(2);
-      document.getElementById('bancosGrid').innerHTML = bancos.map(b => {
-        const comp = b.compra != null ? parseFloat(b.compra).toFixed(2) : null;
-        const vent = b.venta  != null ? parseFloat(b.venta).toFixed(2)  : null;
-        return `<div class="banco-card">
-          <div class="banco-card-name" title="${b.nombre}">${b.nombre}</div>
-          <div class="banco-card-rates">
-            <div class="banco-rate-box">
-              <div class="banco-rate-label buy">Compra</div>
-              <div class="banco-rate-val ${comp ? 'buy' : 'na'}">${comp ? 'Bs ' + comp : '—'}</div>
-            </div>
-            <div class="banco-rate-box">
-              <div class="banco-rate-label sell">Venta</div>
-              <div class="banco-rate-val ${vent ? 'sell' : 'na'}">${vent ? 'Bs ' + vent : '—'}</div>
-            </div>
-          </div>
-        </div>`;
-      }).join('');
-    }
-
-    initCalc();
-    // Actualizar comparación si el VRD ya cargó
-    if (vrdData?.vrd_today) renderComparison(vrdData.vrd_today);
-  }
-
-  // ── HERO MODE ──
-  function setHeroMode(mode) {
-    heroMode = mode;
-    document.getElementById('heroBtnBuy').classList.toggle('active', mode==='buy');
-    document.getElementById('heroBtnSell').classList.toggle('active', mode==='sell');
-    document.getElementById('heroBtnBuy').classList.toggle('buy', true);
-    document.getElementById('heroBtnSell').classList.toggle('sell', true);
-    updateHero();
-  }
-  function updateHero() {
-    if (!pricesData?.binance) return;
-    const price = heroMode==='buy' ? pricesData.binance.buy : pricesData.binance.sell;
-    const el = document.getElementById('heroBigPrice');
-    el.textContent = 'Bs ' + price.toFixed(2);
-    el.className = 'hero-big-price' + (heroMode==='sell' ? ' sell-mode' : '');
-    document.getElementById('heroPriceLabel').textContent = heroMode==='buy' ? 'Precio de Compra' : 'Precio de Venta';
-  }
-
-  // ── SHARE ──
-  function sharePrice() {
-    if (!pricesData?.binance) return;
-    const text = `USDT en Bolivia hoy:\nCompra: Bs ${pricesData.binance.buy.toFixed(2)}\nVenta: Bs ${pricesData.binance.sell.toFixed(2)}\nFuente: USDT Bolivia - Univalle`;
-    if (navigator.share) { navigator.share({ text }); }
-    else if (navigator.clipboard) { navigator.clipboard.writeText(text).then(() => alert('¡Cotización copiada!')); }
-  }
-
-  // ── CHART ──
-  function getHistorySlice(range) {
-    const all = pricesData?.history || [];
-    const cut = d => { const x=new Date(); x.setDate(x.getDate()-d); return x.toISOString().slice(0,10); };
-    if (range==='7D')   return all.filter(h=>h.date>=cut(7));
-    if (range==='30D')  return all.filter(h=>h.date>=cut(30));
-    if (range==='90D')  return all.filter(h=>h.date>=cut(90));
-    if (range==='180D') return all.filter(h=>h.date>=cut(180));
-    if (range==='1A')   return all.filter(h=>h.date>=cut(365));
-    return all;
-  }
-  function updateChartStats(s) {
-    if (!s.length) return;
-    const last=s[s.length-1], prev=s[s.length-2]||s[0];
-    const sells=s.map(h=>h.sell), change=last.sell-prev.sell, pct=((change/prev.sell)*100).toFixed(2);
-    document.getElementById('statVenta').textContent = `Bs ${last.sell.toFixed(2)}`;
-    const el=document.getElementById('statCambio');
-    el.textContent=`${change>=0?'+':''}${pct}%`; el.className='chart-stat-value '+(change>=0?'up':'down');
-    document.getElementById('statMax').textContent=`Bs ${Math.max(...sells).toFixed(2)}`;
-    document.getElementById('statMin').textContent=`Bs ${Math.min(...sells).toFixed(2)}`;
-    document.getElementById('chartMeta').textContent=`Últimos ${s.length} días · ${s.length} puntos`;
-  }
-  function renderChart(range) {
-    if (!pricesData) return;
-    const s=getHistorySlice(range); if (!s.length) return;
-    updateChartStats(s);
-    const M=['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
-    const MFULL=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
-    const labels=s.map(h=>{ const[y,m,d]=h.date.split('-'); return `${d}-${M[+m-1]}-${y.slice(2)}`; });
-    if (chartInstance) chartInstance.destroy();
-    const ctx=document.getElementById('priceChart').getContext('2d');
-    chartInstance=new Chart(ctx,{
-      type:'line',
-      data:{ labels, datasets:[
-        { label:'Venta', data:s.map(h=>h.sell), borderColor:'#003087',
-          backgroundColor: c=>{const g=c.chart.ctx.createLinearGradient(0,0,0,260);g.addColorStop(0,'rgba(0,48,135,0.12)');g.addColorStop(1,'rgba(0,48,135,0)');return g;},
-          borderWidth:2.5, pointRadius:s.length<=14?4:0, pointHoverRadius:5, fill:true, tension:0.3 },
-        { label:'Compra', data:s.map(h=>h.buy), borderColor:'rgba(0,48,135,0.3)',
-          backgroundColor:'transparent', borderWidth:1.5, pointRadius:0, pointHoverRadius:4, fill:false, tension:0.3 }
-      ]},
-      options:{ responsive:true, maintainAspectRatio:false, interaction:{mode:'index',intersect:false},
-        plugins:{ legend:{display:false},
-          tooltip:{ backgroundColor:'#fff', borderColor:'#D6DFF0', borderWidth:1,
-            titleColor:'#0D1B3E', bodyColor:'#4A5573', padding:10, cornerRadius:10,
-            callbacks:{
-              title: items => {
-                const h = s[items[0].dataIndex];
-                const [y,m,d] = h.date.split('-');
-                return `${d} de ${MFULL[+m-1]} de ${y}`;
-              },
-              label:c=>` ${c.dataset.label}: Bs ${c.parsed.y.toFixed(2)}`
-            }}},
-        scales:{
-          x:{ ticks:{color:'#8A95B0',font:{size:11},maxTicksLimit:7,maxRotation:0}, grid:{color:'rgba(0,0,0,0.04)'}, border:{color:'#D6DFF0'} },
-          y:{ position:'right', ticks:{color:'#8A95B0',font:{size:11},callback:v=>'Bs '+v.toFixed(2)}, grid:{color:'rgba(0,0,0,0.04)'}, border:{color:'#D6DFF0'} }
-        }}
-    });
-  }
-  function setChartRange(range,el) {
-    currentRange=range;
-    document.querySelectorAll('.chart-tab').forEach(t=>t.classList.remove('active'));
-    el.classList.add('active'); renderChart(range);
-  }
-
-  // ── CALCULADORA ──
-  const CURRENCY_LABELS={USDT:'Tether (USDT)',BOB:'Boliviano'};
-  function getCalcRate() {
-    if (!pricesData?.binance) return null;
-    const f=document.getElementById('fromCurrency').value, t=document.getElementById('toCurrency').value;
-    if (f==='USDT'&&t==='BOB') return pricesData.binance.sell;
-    if (f==='BOB'&&t==='USDT') return 1/pricesData.binance.sell;
-    return 1;
-  }
-  function updateCalcRateDisplay() {
-    const f=document.getElementById('fromCurrency').value, t=document.getElementById('toCurrency').value;
-    document.getElementById('fromSubLabel').textContent=CURRENCY_LABELS[f]||f;
-    document.getElementById('toSubLabel').textContent=CURRENCY_LABELS[t]||t;
-    const rate=getCalcRate();
-    if (rate) {
-      document.getElementById('calcRateDisplay').textContent = f==='USDT' ? `${rate.toFixed(2)} BOB` : `${(1/rate).toFixed(4)} USDT`;
-      document.getElementById('calcRatePill').textContent = pricesData?.binance?.sell?.toFixed(2)||'—';
-    }
-  }
-  function initCalc() { updateCalcRateDisplay(); }
-  function onCurrencyChange() {
-    const f=document.getElementById('fromCurrency').value, t=document.getElementById('toCurrency');
-    if (f===t.value) t.value=f==='USDT'?'BOB':'USDT';
-    updateCalcRateDisplay(); calculate();
-  }
-  function swapCurrencies() {
-    const fE=document.getElementById('fromCurrency'), tE=document.getElementById('toCurrency');
-    const tmp=fE.value; fE.value=tE.value; tE.value=tmp;
-    const fa=document.getElementById('fromAmount').value, ta=document.getElementById('toAmount').value;
-    document.getElementById('fromAmount').value=ta; document.getElementById('toAmount').value=fa;
-    updateCalcRateDisplay();
-  }
-  function calculate() {
-    const v=parseFloat(document.getElementById('fromAmount').value);
-    if (isNaN(v)||v<=0){document.getElementById('toAmount').value='';return;}
-    const rate=getCalcRate(); if (!rate) return;
-    const t=document.getElementById('toCurrency').value;
-    document.getElementById('toAmount').value=(v*rate).toFixed(t==='BOB'?2:4);
-  }
-  function calculateReverse() {
-    const v=parseFloat(document.getElementById('toAmount').value);
-    if (isNaN(v)||v<=0){document.getElementById('fromAmount').value='';return;}
-    const rate=getCalcRate(); if (!rate) return;
-    const f=document.getElementById('fromCurrency').value;
-    document.getElementById('fromAmount').value=(v/rate).toFixed(f==='BOB'?2:4);
-  }
-  function setQuick(val){document.getElementById('fromAmount').value=val;calculate();}
-  function doConvert() {
-    const fv=parseFloat(document.getElementById('fromAmount').value), tv=parseFloat(document.getElementById('toAmount').value);
-    if (isNaN(fv)||isNaN(tv)||fv<=0) return;
-    const f=document.getElementById('fromCurrency').value, t=document.getElementById('toCurrency').value;
-    const rate=getCalcRate(), time=new Date().toLocaleTimeString('es-BO',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
-    calcHistory.unshift({from:fv,fromCur:f,to:tv,toCur:t,rate,time});
-    if (calcHistory.length>8) calcHistory.pop();
-    renderCalcHistory();
-  }
-  function renderCalcHistory() {
-    const el=document.getElementById('calcHistory');
-    if (!calcHistory.length){el.innerHTML='<div class="calc-empty">Aún no hay conversiones</div>';return;}
-    el.innerHTML=calcHistory.map(h=>`
-      <div class="calc-history-item">
-        <div class="calc-history-conv">${h.from} ${h.fromCur} ⇄ ${h.to.toFixed(h.toCur==='BOB'?2:4)} ${h.toCur}</div>
-        <div class="calc-history-meta">Tasa: ${h.rate?.toFixed(h.toCur==='BOB'?2:4)}<br>${h.time}</div>
-      </div>`).join('');
-  }
-
-  // ── BCB VRD ──
-  let vrdData = null;
-  let vrdChartInstance = null;
-  let vrdRange = 'MAX';
-
-  async function loadVRD() {
-    try {
-      const r = await fetch('data/bcb_vrd.json?v=' + Date.now());
-      vrdData = await r.json();
-      renderVRD();
-    } catch(e) { console.warn('BCB VRD no disponible:', e.message); }
-  }
-
-  function renderVRD() {
-    if (!vrdData) return;
-    const { vrd_today, vrd_min_today, vrd_max_today, n_trans_today, today, history } = vrdData;
-
-    // Hero
-    document.getElementById('vrdPriceBig').textContent = 'Bs ' + (vrd_today||'—');
-    const oficialBuy = pricesData?.bcb?.officialBuy || 6.86;
-    document.getElementById('vrdMin').textContent = 'Bs ' + oficialBuy;
-    document.getElementById('vrdMax').textContent = vrd_max_today ? 'Bs ' + vrd_max_today : '—';
-    document.getElementById('vrdNTrans').textContent = n_trans_today ? n_trans_today.toLocaleString() : '—';
-    const d = today ? new Date(today + 'T12:00:00') : new Date();
-    const meses = ['enero','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
-    document.getElementById('vrdDate').textContent = `${d.getDate()} de ${meses[d.getMonth()]} de ${d.getFullYear()} · Días hábiles bancarios`;
-    const updTime = new Date(vrdData.lastUpdated);
-    const label = document.getElementById('vrdRefreshLabel');
-    if (label) label.textContent = 'act. ' + updTime.toLocaleTimeString('es-BO',{hour:'2-digit',minute:'2-digit'});
-
-    // Comparación — si pricesData aún no cargó, reintenta en 1s
-    if (pricesData?.binance) renderComparison(vrd_today);
-    else setTimeout(() => { if (pricesData?.binance) renderComparison(vrd_today); }, 1200);
-
-    // Gráfico
-    renderVrdChart(vrdRange);
-  }
-
-  function renderComparison(vrd) {
-    if (!pricesData?.binance || !vrd) return;
-    // Usamos el precio de COMPRA de Binance P2P (lo que pagas para adquirir 1 USDT)
-    const usdt = pricesData.binance.buy;
-    const diff = usdt - vrd;
-    const pct  = ((diff / vrd) * 100).toFixed(2);
-
-    document.getElementById('comparePhysPrice').textContent = 'Bs ' + vrd.toFixed(4);
-    document.getElementById('compareUsdtPrice').textContent = 'Bs ' + usdt.toFixed(2);
-
-    const recBox   = document.getElementById('recBox');
-    const recIcon  = document.getElementById('recIcon');
-    const recTitle = document.getElementById('recTitle');
-    const recDesc  = document.getElementById('recDesc');
-    const physCard = document.getElementById('comparePhysCard');
-    const usdtCard = document.getElementById('compareUsdtCard');
-
-    physCard.classList.remove('winner');
-    usdtCard.classList.remove('winner');
-    recBox.className = 'rec-box';
-
-    if (diff > 0.15) {
-      // USDT más caro que físico → conviene USD físico
-      recBox.classList.add('green');
-      recIcon.textContent = '🏦';
-      recTitle.textContent = `Conviene el USD Físico — ${pct}% más barato`;
-      recDesc.textContent  = `El VRD BCB (Bs ${vrd.toFixed(4)}) está Bs ${diff.toFixed(2)} por debajo del USDT P2P (Bs ${usdt.toFixed(2)}). Si necesitas dólares físicos, los librecambistas ofrecen mejor precio hoy.`;
-      physCard.classList.add('winner');
-    } else if (diff < -0.15) {
-      // USDT más barato → conviene USDT
-      recBox.classList.add('green');
-      recIcon.textContent = '🔷';
-      recTitle.textContent = `Conviene el USDT Digital — ${Math.abs(pct)}% más barato`;
-      recDesc.textContent  = `El USDT P2P (Bs ${usdt.toFixed(2)}) está Bs ${Math.abs(diff).toFixed(2)} por debajo del dólar físico (VRD Bs ${vrd.toFixed(4)}). El mercado P2P ofrece mejor tipo de cambio hoy.`;
-      usdtCard.classList.add('winner');
+  // Best banner
+  if (sorted.length > 0) {
+    const best = sorted[0];
+    banner.style.display = 'flex';
+    document.getElementById('bestName').textContent = best.nombre;
+    if (currentMode === 'venta') {
+      document.getElementById('bestLabel').textContent = 'Mejor precio para comprar dólares hoy';
+      document.getElementById('bestRate').innerHTML = `Venta más barata: <strong id="bestRateVal">${fmt(best.venta)} Bs</strong> por dólar`;
     } else {
-      // Precios similares
-      recBox.classList.add('yellow');
-      recIcon.textContent = '⚖️';
-      recTitle.textContent = `Precios Similares — Diferencia de solo Bs ${Math.abs(diff).toFixed(2)}`;
-      recDesc.textContent  = `El USD físico (VRD Bs ${vrd.toFixed(4)}) y el USDT digital (Bs ${usdt.toFixed(2)}) tienen precios muy similares hoy. Elige según tu necesidad: dólares físicos para efectivo, USDT para pagos digitales e internacionales.`;
+      document.getElementById('bestLabel').textContent = 'Mejor precio para vender tus dólares hoy';
+      document.getElementById('bestRate').innerHTML = `Compra más alta: <strong id="bestRateVal">${fmt(best.compra)} Bs</strong> por dólar`;
     }
+  } else {
+    banner.style.display = 'none';
   }
 
-  function getVrdSlice(range) {
-    const all = vrdData?.history || [];
-    const cutDays = d => { const x=new Date(); x.setDate(x.getDate()-d); return x.toISOString().slice(0,10); };
-    if (range === '7D')  return all.filter(h => h.date >= cutDays(7));
-    if (range === '15D') return all.filter(h => h.date >= cutDays(15));
-    if (range === '30D') return all.filter(h => h.date >= cutDays(30));
-    return all;
+  // Info cards stats
+  const ventaList  = bancos.filter(b => b.venta  != null).map(b => parseFloat(b.venta));
+  const compraList = bancos.filter(b => b.compra != null).map(b => parseFloat(b.compra));
+  if (ventaList.length && compraList.length) {
+    const spreads = bancos
+      .filter(b => b.venta != null && b.compra != null)
+      .map(b => parseFloat(b.venta) - parseFloat(b.compra));
+    const avgSpread = spreads.length ? spreads.reduce((a,c) => a+c, 0) / spreads.length : null;
+    if (avgSpread != null) document.getElementById('infoSpread').innerHTML = `${avgSpread.toFixed(2)} <span class="unit">Bs</span>`;
+    document.getElementById('infoBestVenta').innerHTML  = `${Math.min(...ventaList).toFixed(2)} <span class="unit">Bs</span>`;
+    document.getElementById('infoBestCompra').innerHTML = `${Math.max(...compraList).toFixed(2)} <span class="unit">Bs</span>`;
   }
+}
 
-  function renderVrdChart(range) {
-    if (!vrdData) return;
-    const slice = getVrdSlice(range);
-    if (!slice.length) return;
+async function loadData() {
+  try {
+    const r = await fetch(DATA_URL + '?t=' + Date.now());
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    const d = await r.json();
 
-    // Stats — use vrd_today from root for "HOY", slice stats for period
-    const todayVrd = vrdData.vrd_today || slice[slice.length-1].vrd;
-    const prev = slice[slice.length-2] || slice[0];
-    const last = slice[slice.length-1];
-    const vals = slice.map(h=>h.vrd);
-    const change = last.vrd - prev.vrd;
-    const pct = ((change/prev.vrd)*100).toFixed(2);
+    // Header date/time
+    if (d.lastUpdated) {
+      const dt = new Date(d.lastUpdated);
+      document.getElementById('headerDate').textContent = d.displayDate || '';
+      document.getElementById('headerTime').textContent = 'Actualizado ' + dt.toLocaleTimeString('es-BO', {hour:'2-digit',minute:'2-digit'});
+    }
 
-    document.getElementById('vrdStatHoy').textContent = `Bs ${todayVrd.toFixed(4)}`;
-    const chEl = document.getElementById('vrdStatCambio');
-    chEl.textContent = `${change>=0?'+':''}${pct}%`;
-    chEl.style.color = change >= 0 ? 'var(--green)' : 'var(--red)';
-    document.getElementById('vrdStatMax').textContent = `Bs ${Math.max(...vals).toFixed(4)}`;
-    document.getElementById('vrdStatMin').textContent = `Bs ${Math.min(...vals).toFixed(4)}`;
-    const rangeLabel = range==='MAX' ? `${slice.length} días hábiles (histórico completo)` : `Últimos ${slice.length} días hábiles`;
-    document.getElementById('vrdChartMeta').textContent = `${rangeLabel} · Fuente: Banco Central de Bolivia`;
+    // Hero — Oficial
+    const bcb = d.bcb || {};
+    const tco = bcb.tco || bcb.officialBuy || bcb.officialSell;
+    document.getElementById('oficialCompra').innerHTML = `${fmt(bcb.officialBuy || tco)} <span>Bs</span>`;
+    document.getElementById('oficialVenta').innerHTML  = `${fmt(bcb.officialSell || tco)} <span>Bs</span>`;
+    if (tco) document.getElementById('infoTco').innerHTML = `${fmt(tco)} <span class="unit">Bs</span>`;
 
-    const M = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
-    const labels = slice.map(h => { const [y,mo,d]=h.date.split('-'); return `${d} ${M[+mo-1]}`; });
+    // Hero — Paralelo
+    const refBuy  = bcb.referentialBuy;
+    const refSell = bcb.referentialSell;
+    document.getElementById('paraleloCompra').innerHTML = `${fmt(refBuy)} <span>Bs</span>`;
+    document.getElementById('paraleloVenta').innerHTML  = `${fmt(refSell)} <span>Bs</span>`;
 
-    // Overlay USDT history
-    const usdtMap = {};
-    (pricesData?.history||[]).forEach(h => usdtMap[h.date] = (h.buy+h.sell)/2);
-    const usdtOverlay = slice.map(h => usdtMap[h.date] || null);
+    // Banks
+    renderBanks(d.bancos || []);
 
-    if (vrdChartInstance) vrdChartInstance.destroy();
-    const ctx = document.getElementById('vrdChart').getContext('2d');
-    vrdChartInstance = new Chart(ctx, {
-      type: 'line',
-      data: {
-        labels,
-        datasets: [
-          { label:'VRD Compra BCB',
-            data: slice.map(h=>h.vrd),
-            borderColor:'#1565C0',
-            backgroundColor: c => {
-              const g = c.chart.ctx.createLinearGradient(0,0,0,260);
-              g.addColorStop(0,'rgba(21,101,192,0.22)');
-              g.addColorStop(0.6,'rgba(21,101,192,0.06)');
-              g.addColorStop(1,'rgba(21,101,192,0)');
-              return g;
-            },
-            borderWidth:2.5,
-            pointRadius: slice.length<=10 ? 5 : slice.length<=20 ? 3 : 0,
-            pointHoverRadius:6,
-            pointBackgroundColor:'#1565C0',
-            pointBorderColor:'#fff',
-            pointBorderWidth:2,
-            fill:true, tension:0.35 },
-          { label:'USDT P2P (Promedio)',
-            data: usdtOverlay,
-            borderColor:'rgba(124,58,237,0.75)',
-            backgroundColor:'transparent',
-            borderWidth:2,
-            borderDash:[6,4],
-            pointRadius:0,
-            pointHoverRadius:5,
-            pointBackgroundColor:'rgba(124,58,237,0.75)',
-            fill:false, tension:0.35, spanGaps:true }
-        ]
-      },
-      options: {
-        responsive:true, maintainAspectRatio:false,
-        interaction:{ mode:'index', intersect:false },
-        plugins:{
-          legend:{ display:false },
-          tooltip:{
-            backgroundColor:'rgba(255,255,255,0.97)',
-            borderColor:'#D6DFF0', borderWidth:1,
-            titleColor:'#0D1B3E', bodyColor:'#4A5573',
-            padding:12, cornerRadius:10,
-            callbacks:{
-              title: items => {
-                const h = slice[items[0].dataIndex];
-                const [y,mo,d] = h.date.split('-');
-                return `${d} de ${['enero','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'][+mo-1]} ${y}`;
-              },
-              label: c => {
-                const v = c.parsed.y;
-                if (v == null) return null;
-                const icon = c.datasetIndex === 0 ? '🏦' : '🔷';
-                return ` ${icon} ${c.dataset.label}: Bs ${v.toFixed(4)}`;
-              },
-              afterBody: items => {
-                const vrd = slice[items[0].dataIndex].vrd;
-                const usdt = usdtOverlay[items[0].dataIndex];
-                if (usdt == null) return [];
-                const diff = usdt - vrd;
-                return [``, ` Diferencia: ${diff>=0?'+':''}${diff.toFixed(4)} Bs/USD`];
-              }
-            }
-          }
-        },
-        scales:{
-          x:{
-            ticks:{color:'#8A95B0', font:{size:11}, maxTicksLimit:8, maxRotation:0},
-            grid:{color:'rgba(0,0,0,0.03)'},
-            border:{color:'#D6DFF0'}
-          },
-          y:{
-            position:'right',
-            ticks:{
-              color:'#8A95B0', font:{size:11},
-              callback: v => 'Bs ' + v.toFixed(2)
-            },
-            grid:{color:'rgba(0,48,135,0.04)'},
-            border:{color:'#D6DFF0'},
-            suggestedMin: Math.min(...vals) - 0.3,
-            suggestedMax: Math.max(...vals) + 0.3
-          }
-        }
-      }
-    });
+  } catch (e) {
+    console.error('Error cargando datos:', e);
+    document.getElementById('banksGrid').innerHTML = '<div class="bank-no-data">Error al cargar datos. Intenta más tarde.</div>';
   }
+}
 
-  function setVrdRange(range, el) {
-    vrdRange = range;
-    document.querySelectorAll('#vrdChartTabs .chart-tab').forEach(t=>t.classList.remove('active'));
-    el.classList.add('active');
-    renderVrdChart(range);
-  }
-
-  loadPrices();
-  loadVRD();
-
-  // Auto-refresh cada 30 minutos (precios en vivo desde la API del navegador)
-  // GitHub Actions actualiza el historial cada 2 horas en días hábiles
-  setInterval(() => {
-    loadPrices();
-    loadVRD();
-  }, 30 * 60 * 1000);
+loadData();
+setInterval(loadData, 5 * 60 * 1000); // refresh every 5 min
 </script>
 </body>
 </html>
