@@ -5,8 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Dólar Bolivia — Tipo de Cambio Hoy</title>
   <meta name="description" content="Tipo de cambio del dólar en Bolivia. Cotización oficial BCB, mercado paralelo y pizarras de todos los bancos comparadas en un solo lugar." />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <style>
+    @import url('https://fonts.bunny.net/css?family=inter:300,400,500,600,700,800,900&display=swap');
+  </style>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
   <style>
     :root {
@@ -295,6 +296,48 @@
     .project-box p { font-size:13px; color:var(--text2); }
     .project-box strong { color:var(--navy); }
 
+    /* ══ NOTICIAS ══ */
+    .news-section { margin-bottom: 28px; }
+    .news-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 14px; }
+    .news-card {
+      background: var(--bg2); border: 1px solid var(--border); border-radius: 14px;
+      padding: 18px 20px; display: flex; flex-direction: column; gap: 8px;
+      transition: box-shadow .2s, border-color .2s; text-decoration: none; color: inherit;
+    }
+    .news-card:hover { box-shadow: var(--shadow); border-color: #b0bcd8; }
+    .news-card-source { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .07em; color: var(--blue); }
+    .news-card-title { font-size: 14px; font-weight: 700; color: var(--text); line-height: 1.4; }
+    .news-card-desc { font-size: 12px; color: var(--text2); line-height: 1.55; flex: 1; }
+    .news-card-date { font-size: 11px; color: var(--text3); }
+    .news-empty { color: var(--text3); font-size: 13px; padding: 20px 0; }
+
+    /* ══ PREDICCIÓN ══ */
+    .pred-card {
+      background: linear-gradient(135deg, var(--navy) 0%, var(--blue) 100%);
+      border-radius: 16px; padding: 28px 28px; color: #fff; margin-bottom: 28px;
+      display: flex; gap: 32px; flex-wrap: wrap; align-items: center;
+    }
+    .pred-card-left { flex: 1; min-width: 200px; }
+    .pred-label { font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; opacity: .7; margin-bottom: 6px; }
+    .pred-title { font-size: 20px; font-weight: 800; margin-bottom: 4px; }
+    .pred-trend-badge {
+      display: inline-flex; align-items: center; gap: 5px;
+      padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 700;
+      margin-top: 8px;
+    }
+    .pred-trend-badge.alza    { background: rgba(255,255,255,.15); color: #7feba2; }
+    .pred-trend-badge.baja    { background: rgba(255,255,255,.15); color: #ff8a80; }
+    .pred-trend-badge.estable { background: rgba(255,255,255,.15); color: rgba(255,255,255,.8); }
+    .pred-rates { display: flex; gap: 24px; flex-wrap: wrap; }
+    .pred-rate { text-align: center; }
+    .pred-rate-label { font-size: 11px; opacity: .65; font-weight: 600; margin-bottom: 3px; }
+    .pred-rate-val { font-size: 28px; font-weight: 900; line-height: 1; }
+    .pred-rate-change { font-size: 12px; margin-top: 3px; }
+    .pred-rate-change.up   { color: #7feba2; }
+    .pred-rate-change.down { color: #ff8a80; }
+    .pred-rate-change.flat { color: rgba(255,255,255,.6); }
+    .pred-disclaimer { font-size: 11px; opacity: .5; margin-top: 14px; }
+
     /* ══ FOOTER ══ */
     footer { background:var(--navy); color:rgba(255,255,255,.85); padding:40px 20px 24px; }
     .footer-inner { max-width:1100px; margin:0 auto; }
@@ -410,6 +453,8 @@
       <a href="#bancos">Pizarras</a>
       <a href="#limits">Límites</a>
       <a href="#chart">Gráfica</a>
+      <a href="#prediccion">Predicción</a>
+      <a href="#noticias">Noticias</a>
     </nav>
     <div class="header-date" id="headerDate">—</div>
     <button class="hamburger" id="hamburgerBtn" onclick="toggleMenu()" aria-label="Menú">
@@ -428,6 +473,8 @@
     <a href="#bancos"     onclick="closeMobileNav()">🏦 Pizarras Bancarias</a>
     <a href="#limits"     onclick="closeMobileNav()">⚠️ Límites Bancarios</a>
     <a href="#chart"      onclick="closeMobileNav()">📈 Gráfica</a>
+    <a href="#prediccion" onclick="closeMobileNav()">🔮 Predicción</a>
+    <a href="#noticias"   onclick="closeMobileNav()">📰 Noticias</a>
   </div>
 </div>
 
@@ -809,6 +856,39 @@
     <div class="limits-note">⚠️ Estos límites son referenciales y pueden cambiar sin previo aviso. Verifica siempre con tu banco antes de operar.</div>
   </div>
 
+  <!-- PREDICCIÓN -->
+  <div id="prediccion" style="margin-top:32px">
+    <div class="section-title" style="margin-bottom:16px"><span>🔮</span> Cotización Esperada — Mañana</div>
+    <div class="pred-card" id="predCard">
+      <div class="pred-card-left">
+        <div class="pred-label">Proyección basada en tendencia</div>
+        <div class="pred-title">¿Cómo podría estar mañana?</div>
+        <div id="predTrendBadge" class="pred-trend-badge estable">— Calculando…</div>
+        <div class="pred-disclaimer" id="predDisclaimer">Estimación estadística. No es asesoramiento financiero.</div>
+      </div>
+      <div class="pred-rates">
+        <div class="pred-rate">
+          <div class="pred-rate-label">Compra estimada</div>
+          <div class="pred-rate-val" id="predBuy">—</div>
+          <div class="pred-rate-change flat" id="predChangeBuy">—</div>
+        </div>
+        <div class="pred-rate">
+          <div class="pred-rate-label">Venta estimada</div>
+          <div class="pred-rate-val" id="predSell">—</div>
+          <div class="pred-rate-change flat" id="predChangeSell">—</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- NOTICIAS -->
+  <div id="noticias" style="margin-top:32px" class="news-section">
+    <div class="section-title" style="margin-bottom:6px"><span>📰</span> Noticias Económicas Bolivia</div>
+    <div style="font-size:13px;color:var(--text2);margin-bottom:16px">Noticias relevantes sobre economía, tipo de cambio y finanzas en Bolivia. Actualizado cada hora.</div>
+    <div class="news-grid" id="newsGrid">
+      <div class="news-empty">Cargando noticias…</div>
+    </div>
+  </div>
 
 </main>
 
@@ -1117,7 +1197,7 @@
     // El gráfico siempre se renderiza primero, de forma independiente
     try { renderChart(currentRange); } catch(e) { console.error('Chart error:', e); }
 
-    const { binance, airtm, eldorado, takenos, wallbit, bybit, saldoar, bcb, bancos, displayDate } = pricesData;
+    const { binance, airtm, eldorado, takenos, wallbit, bybit, saldoar, bcb, bancos, news, prediction, displayDate } = pricesData;
 
     document.getElementById('headerDate').textContent = displayDate || '';
 
@@ -1218,6 +1298,51 @@
     initCalc();
     // Actualizar comparación si el VRD ya cargó
     if (vrdData?.vrd_today) renderComparison(vrdData.vrd_today);
+
+    // Predicción
+    renderPrediction(prediction);
+
+    // Noticias
+    renderNews(news);
+  }
+
+  function renderPrediction(pred) {
+    if (!pred) return;
+    const fmt = v => parseFloat(v).toFixed(2);
+    const sign = v => v > 0 ? '+' : '';
+    document.getElementById('predBuy').textContent  = 'Bs ' + fmt(pred.buyTomorrow);
+    document.getElementById('predSell').textContent = 'Bs ' + fmt(pred.sellTomorrow);
+    const cb = pred.changeBuy,  cs = pred.changeSell;
+    const cbEl = document.getElementById('predChangeBuy');
+    const csEl = document.getElementById('predChangeSell');
+    cbEl.textContent = sign(cb) + fmt(cb) + ' Bs';
+    cbEl.className   = 'pred-rate-change ' + (cb > 0.005 ? 'up' : cb < -0.005 ? 'down' : 'flat');
+    csEl.textContent = sign(cs) + fmt(cs) + ' Bs';
+    csEl.className   = 'pred-rate-change ' + (cs > 0.005 ? 'up' : cs < -0.005 ? 'down' : 'flat');
+    const badge = document.getElementById('predTrendBadge');
+    const icons = { alza: '↗ Tendencia al alza', baja: '↘ Tendencia a la baja', estable: '→ Tendencia estable' };
+    badge.textContent = icons[pred.trend] || '— Sin datos suficientes';
+    badge.className   = 'pred-trend-badge ' + (pred.trend || 'estable');
+    document.getElementById('predDisclaimer').textContent =
+      `Proyección basada en los últimos ${pred.basedOnDays} días · Confianza ${pred.confidence} · No es asesoramiento financiero.`;
+  }
+
+  function renderNews(newsList) {
+    const grid = document.getElementById('newsGrid');
+    if (!newsList || !newsList.length) {
+      grid.innerHTML = '<div class="news-empty">No hay noticias disponibles en este momento. Se actualizan cada hora.</div>';
+      return;
+    }
+    grid.innerHTML = newsList.map(n => {
+      const d = new Date(n.date);
+      const dateStr = isNaN(d) ? '' : d.toLocaleDateString('es-BO', {day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'});
+      return `<a class="news-card" href="${n.link || '#'}" target="_blank" rel="noopener noreferrer">
+        <div class="news-card-source">${n.source}</div>
+        <div class="news-card-title">${n.title}</div>
+        ${n.desc ? `<div class="news-card-desc">${n.desc}</div>` : ''}
+        <div class="news-card-date">${dateStr}</div>
+      </a>`;
+    }).join('');
   }
 
   // ── HERO MODE ──

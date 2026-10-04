@@ -1,7 +1,10 @@
 import json
 import urllib.request
+import urllib.parse
+import xml.etree.ElementTree as ET
 from datetime import datetime, timezone, timedelta
 from html.parser import HTMLParser
+import re
 import os
 import sys
 
@@ -278,6 +281,132 @@ else:
     print("   BCB VRD no disponible -> usando dato guardado")
     vrd_today = vrd_data.get("vrd_today") or tco_valor or 12.0
 
+# ── Noticias Económicas Bolivia (RSS) ─────────────────────────────────────
+print("\n5. Noticias económicas (RSS)...")
+
+NEWS_KEYWORDS = [
+    "dólar", "dolar", "tipo de cambio", "boliviano", "banco central", "bcb",
+    "reservas", "inflación", "inflacion", "economía", "economia",
+    "diésel", "diesel", "combustible", "exportaciones", "importaciones",
+    "deuda", "fiscal", "bcb", "tco", "moneda", "divisa", "finanzas",
+    "presupuesto", "gas", "litio", "inversión", "inversion", "crecimiento",
+]
+
+RSS_SOURCES = [
+    {"name": "Los Tiempos", "url": "https://www.lostiempos.com/rss.xml"},
+    {"name": "Página Siete",  "url": "https://www.paginasiete.bo/rss"},
+    {"name": "El Deber",      "url": "https://eldeber.com.bo/rss.xml"},
+    {"name": "Ahora El Pueblo","url": "https://ahoraelpueblo.bo/feed/"},
+    {"name": "Urgente Bo",    "url": "https://urgente.bo/feed"},
+]
+
+def strip_html(txt):
+    return re.sub(r"<[^>]+>", "", txt or "").strip()
+
+def rss_date_to_iso(raw):
+    for fmt in ("%a, %d %b %Y %H:%M:%S %z", "%a, %d %b %Y %H:%M:%S %Z"):
+        try:
+            return datetime.strptime(raw.strip(), fmt).strftime("%Y-%m-%dT%H:%M:%SZ")
+        except Exception:
+            pass
+    return None
+
+def fetch_rss(source, max_items=6):
+    h = {"User-Agent": HEADERS["User-Agent"], "Accept": "application/rss+xml, application/xml, text/xml"}
+    req = urllib.request.Request(source["url"], headers=h)
+    items = []
+    try:
+        with urllib.request.urlopen(req, timeout=15) as r:
+            raw = r.read()
+        root = ET.fromstring(raw)
+        ns = ""
+        channel = root.find("channel") or root
+        for item in channel.findall("item")[:20]:
+            title = strip_html(item.findtext("title") or "")
+            desc  = strip_html(item.findtext("description") or "")
+            link  = (item.findtext("link") or "").strip()
+            pub   = item.findtext("pubDate") or ""
+            text  = (title + " " + desc).lower()
+            if not any(kw in text for kw in NEWS_KEYWORDS):
+                continue
+            items.append({
+                "source": source["name"],
+                "title":  title,
+                "desc":   desc[:200] + ("…" if len(desc) > 200 else ""),
+                "link":   link,
+                "date":   rss_date_to_iso(pub) or datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+            })
+            if len(items) >= max_items:
+                break
+    except Exception as e:
+        print(f"   RSS error {source['name']}: {e}")
+    return items
+
+all_news = []
+for src in RSS_SOURCES:
+    items = fetch_rss(src)
+    all_news.extend(items)
+    print(f"   {src['name']}: {len(items)} noticias relevantes")
+
+# ordenar por fecha desc, tomar top 15
+all_news.sort(key=lambda x: x["date"], reverse=True)
+all_news = all_news[:15]
+print(f"   Total noticias seleccionadas: {len(all_news)}")
+
+# ── Predicción de tendencia ────────────────────────────────────────────────
+print("\n6. Calculando predicción de tendencia...")
+
+def calc_prediction(history_list, current_buy, current_sell):
+    recent = sorted(history_list, key=lambda x: x["date"])[-7:]
+    if len(recent) < 3:
+        return None
+    buys  = [float(h["buy"])  for h in recent]
+    sells = [float(h["sell"]) for h in recent]
+    n = len(buys)
+    xs = list(range(n))
+    def linreg(ys):
+        xm = sum(xs) / n
+        ym = sum(ys) / n
+        num = sum((xs[i]-xm)*(ys[i]-ym) for i in range(n))
+        den = sum((xs[i]-xm)**2 for i in range(n))
+        slope = num / den if den else 0
+        return slope, ym - slope * xm
+    sb, ib = linreg(buys)
+    ss, is_ = linreg(sells)
+    next_x = n
+    pb = round(sb * next_x + ib, 2)
+    ps = round(ss * next_x + is_, 2)
+    pb = max(pb, 0.01)
+    ps = max(ps, 0.01)
+    change_b = round(pb - current_buy,  2)
+    change_s = round(ps - current_sell, 2)
+    avg_change = (abs(change_b) + abs(change_s)) / 2
+    if avg_change < 0.01:
+        trend = "estable"
+    elif (change_b + change_s) > 0:
+        trend = "alza"
+    else:
+        trend = "baja"
+    confidence = "alta" if len(recent) >= 6 else "media"
+    return {
+        "buyTomorrow":    pb,
+        "sellTomorrow":   ps,
+        "changeBuy":      change_b,
+        "changeSell":     change_s,
+        "trend":          trend,
+        "confidence":     confidence,
+        "basedOnDays":    len(recent),
+    }
+
+history_for_pred = existing.get("history", [])
+history_for_pred = [h for h in history_for_pred if h["date"] != today_str]
+history_for_pred.append({"date": today_str, "buy": buy_price, "sell": sell_price})
+prediction = calc_prediction(history_for_pred, buy_price, sell_price)
+if prediction:
+    print(f"   Compra mañana: {prediction['buyTomorrow']} | Venta: {prediction['sellTomorrow']} | Tendencia: {prediction['trend']}")
+else:
+    print("   Sin suficientes datos para predicción")
+
 # ── Historial USDT ─────────────────────────────────────────────────────────
 history = existing.get("history", [])
 history = [h for h in history if h["date"] != today_str]
@@ -295,9 +424,11 @@ save_json("data/prices.json", {
     "airtm":    airtm_data,
     "bybit":    bybit_data,
     "saldoar":  saldoar_data,
-    "bcb":      bcb_data,
-    "bancos":   bancos_data,
-    "history":  history,
+    "bcb":        bcb_data,
+    "bancos":     bancos_data,
+    "news":       all_news,
+    "prediction": prediction,
+    "history":    history,
 })
 print("\nprices.json guardado.")
 
