@@ -1212,8 +1212,8 @@
     }
     if (bcb) {
       const tcoVal = bcb.tco || bcb.officialBuy || bcb.referentialBuy;
-      document.getElementById('heroCardBcbBuy').textContent  = 'Bs ' + (bcb.referentialBuy  || tcoVal || '—');
-      document.getElementById('heroCardBcbSell').textContent = 'Bs ' + (bcb.referentialSell || tcoVal || '—');
+      document.getElementById('heroCardBcbBuy').textContent  = 'Bs ' + (bcb.referentialSell || tcoVal || '—');
+      document.getElementById('heroCardBcbSell').textContent = 'Bs ' + (bcb.referentialBuy  || tcoVal || '—');
     }
     const now = new Date();
     document.getElementById('ratesTime').textContent = now.toLocaleDateString('es-BO') + ', ' + now.toLocaleTimeString('es-BO',{hour:'2-digit',minute:'2-digit'});
@@ -1262,13 +1262,13 @@
       const tcoVal = bcb.tco || bcb.officialBuy;
       document.getElementById('bcbOfficialBuy').textContent   = (bcb.officialBuy  || tcoVal || '—') + ' Bs';
       document.getElementById('bcbOfficialSell').textContent  = (bcb.officialSell || tcoVal || '—') + ' Bs';
-      document.getElementById('bcbRefBuy').textContent        = (bcb.referentialBuy  || tcoVal || '—') + ' Bs';
-      document.getElementById('bcbRefSell').textContent       = (bcb.referentialSell || tcoVal || '—') + ' Bs';
+      document.getElementById('bcbRefBuy').textContent        = (bcb.referentialSell || tcoVal || '—') + ' Bs';
+      document.getElementById('bcbRefSell').textContent       = (bcb.referentialBuy  || tcoVal || '—') + ' Bs';
       document.getElementById('bcbDate').textContent = 'Cotización: '+(displayDate||'')+' · Fuente: Banco Central de Bolivia';
       document.getElementById('footerBcbBuy').textContent     = (tcoVal || '—') + ' Bs';
       document.getElementById('footerBcbSell').textContent    = (tcoVal || '—') + ' Bs';
-      document.getElementById('footerBcbRefBuy').textContent  = (bcb.referentialBuy  || tcoVal || '—') + ' Bs';
-      document.getElementById('footerBcbRefSell').textContent = (bcb.referentialSell || tcoVal || '—') + ' Bs';
+      document.getElementById('footerBcbRefBuy').textContent  = (bcb.referentialSell || tcoVal || '—') + ' Bs';
+      document.getElementById('footerBcbRefSell').textContent = (bcb.referentialBuy  || tcoVal || '—') + ' Bs';
       document.getElementById('footerBcbDate').innerHTML = (displayDate||'')+'<br>Fuente: Banco Central de Bolivia';
     }
 
