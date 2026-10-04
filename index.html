@@ -360,6 +360,26 @@
     /* VRD chart */
     .vrd-chart-wrap { position:relative; height:300px; }
     @media (max-width:480px) { .vrd-chart-wrap { height:200px; } }
+    /* ══ BANCOS PIZARRA ══ */
+    .bancos-section { margin-bottom:22px; }
+    .bancos-header { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px; margin-bottom:14px; }
+    .bancos-tco-pill { background:var(--navy); color:#fff; font-size:13px; font-weight:800; padding:6px 16px; border-radius:20px; display:flex; align-items:center; gap:6px; }
+    .bancos-tco-val { font-size:16px; font-weight:900; color:var(--gold); }
+    .bancos-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:12px; }
+    .banco-card { background:var(--bg2); border:1px solid var(--border); border-radius:12px; padding:16px 18px; transition:box-shadow .18s; }
+    .banco-card:hover { box-shadow:var(--shadow-lg); }
+    .banco-card-name { font-size:13px; font-weight:800; color:var(--navy); margin-bottom:12px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .banco-card-rates { display:flex; gap:8px; }
+    .banco-rate-box { flex:1; background:var(--bg3); border-radius:8px; padding:8px 10px; text-align:center; }
+    .banco-rate-label { font-size:9px; font-weight:700; text-transform:uppercase; letter-spacing:.07em; margin-bottom:3px; }
+    .banco-rate-label.buy  { color:var(--green); }
+    .banco-rate-label.sell { color:var(--red); }
+    .banco-rate-val { font-size:17px; font-weight:900; }
+    .banco-rate-val.buy  { color:var(--green); }
+    .banco-rate-val.sell { color:var(--red); }
+    .banco-rate-val.na   { color:var(--text3); font-size:13px; }
+    .bancos-note { font-size:11px; color:var(--text3); margin-top:10px; text-align:center; }
+
     /* ══ UTILS ══ */
     @media (max-width:600px) { .hide-mobile { display:none !important; } }
   </style>
@@ -387,7 +407,8 @@
       <a href="#calculator">Calculadora</a>
       <a href="#platforms">P2P</a>
       <a href="#bcbvrd">BCB / VRD</a>
-      <a href="#limits">Bancos</a>
+      <a href="#bancos">Pizarras</a>
+      <a href="#limits">Límites</a>
       <a href="#chart">Gráfica</a>
     </nav>
     <div class="header-date" id="headerDate">—</div>
@@ -404,6 +425,7 @@
     <a href="#calculator" onclick="closeMobileNav()">🧮 Calculadora</a>
     <a href="#platforms"  onclick="closeMobileNav()">🏦 Plataformas P2P</a>
     <a href="#bcbvrd"     onclick="closeMobileNav()">🏛️ BCB / VRD</a>
+    <a href="#bancos"     onclick="closeMobileNav()">🏦 Pizarras Bancarias</a>
     <a href="#limits"     onclick="closeMobileNav()">⚠️ Límites Bancarios</a>
     <a href="#chart"      onclick="closeMobileNav()">📈 Gráfica</a>
   </div>
@@ -693,6 +715,18 @@
     </div>
   </div>
 
+  <!-- BANCOS PIZARRA -->
+  <div id="bancos" class="bancos-section card">
+    <div class="bancos-header">
+      <div class="section-title" style="margin-bottom:0"><span>🏦</span> Pizarras Bancarias — USD Físico</div>
+      <div class="bancos-tco-pill">TCO BCB: <span class="bancos-tco-val" id="bancosTcoVal">—</span> <span style="font-size:11px;opacity:.7">Bs</span></div>
+    </div>
+    <div class="bancos-grid" id="bancosGrid">
+      <div style="font-size:13px;color:var(--text3);padding:16px">Cargando cotizaciones bancarias...</div>
+    </div>
+    <div class="bancos-note">Pizarra publicada por cada banco en su web. Tipo de cambio para USD físico, no USDT. Fuente: <strong>dolarbluebolivia.click</strong></div>
+  </div>
+
   <!-- LIMITS -->
   <div id="limits" class="limits-section">
     <div class="limits-hero">
@@ -929,7 +963,7 @@
 
     // 2. Llamar todos los endpoints en paralelo
     try {
-      const [official, eldorado, takenos, wallbit, airtm, bybit, saldoar, bcbvrd] = await Promise.allSettled([
+      const [official, eldorado, takenos, wallbit, airtm, bybit, saldoar, bancos] = await Promise.allSettled([
         dbbGet('/v1/officialRate'),
         dbbGet('/v1/eldorado'),
         dbbGet('/v1/takenos'),
@@ -937,18 +971,18 @@
         dbbGet('/v1/airtm'),
         dbbGet('/v1/p2p/bybit'),
         dbbGet('/v1/saldoar'),
-        dbbGet('/v1/referencial/bcb'),
+        dbbGet('/v1/bancos'),
       ]);
 
       const val = r => r.status === 'fulfilled' ? r.value : null;
-      const live   = val(official);
-      const dEld   = val(eldorado);
-      const dTak   = val(takenos);
-      const dWall  = val(wallbit);
-      const dAir   = val(airtm);
-      const dBybit = val(bybit);
-      const dSaldo = val(saldoar);
-      const dVrd   = val(bcbvrd);
+      const live    = val(official);
+      const dEld    = val(eldorado);
+      const dTak    = val(takenos);
+      const dWall   = val(wallbit);
+      const dAir    = val(airtm);
+      const dBybit  = val(bybit);
+      const dSaldo  = val(saldoar);
+      const dBancos = val(bancos);
 
       // Binance P2P (blue = mercado paralelo)
       if (live?.blue) {
@@ -969,20 +1003,26 @@
       if (dSaldo?.buy && dSaldo?.sell)
         base.saldoar  = { buy: dSaldo.buy, sell: dSaldo.sell, available: true };
 
-      // BCB oficial + VRD
+      // BCB oficial + bancos pizarra
+      const tco = dBancos?.tco?.valor || base.bcb?.tco || null;
       if (live?.official) {
         base.bcb = {
+          tco:             tco,
           officialBuy:     live.official.buy,
           officialSell:    live.official.sell,
           referentialBuy:  live.blue?.buy  || base.bcb?.referentialBuy,
           referentialSell: live.blue?.sell || base.bcb?.referentialSell,
-          vrdBuy:  dVrd?.buy  || dVrd?.compra || base.bcb?.vrdBuy,
-          vrdSell: dVrd?.sell || dVrd?.venta  || base.bcb?.vrdSell,
         };
-      } else if (dVrd?.buy) {
+      } else if (tco) {
         base.bcb = base.bcb || {};
-        base.bcb.vrdBuy  = dVrd.buy;
-        base.bcb.vrdSell = dVrd.sell;
+        base.bcb.tco = tco;
+      }
+      if (dBancos?.bancos) {
+        base.bancos = dBancos.bancos
+          .filter(b => b.pizarra?.estado === 'vigente')
+          .map(b => ({ id: b.id, nombre: b.nombre, web: b.web,
+                       compra: b.pizarra.compra, venta: b.pizarra.venta,
+                       fecha: b.pizarra.fecha }));
       }
 
       // Actualizar historial con precio del día
@@ -1079,7 +1119,7 @@
     // El gráfico siempre se renderiza primero, de forma independiente
     try { renderChart(currentRange); } catch(e) { console.error('Chart error:', e); }
 
-    const { binance, airtm, eldorado, takenos, wallbit, bybit, saldoar, bcb, displayDate } = pricesData;
+    const { binance, airtm, eldorado, takenos, wallbit, bybit, saldoar, bcb, bancos, displayDate } = pricesData;
 
     document.getElementById('headerDate').textContent = displayDate || '';
 
@@ -1093,8 +1133,9 @@
       document.getElementById('heroCardSell').textContent = 'Bs ' + (isNaN(bSell) ? binance.sell : bSell.toFixed(2));
     }
     if (bcb) {
-      document.getElementById('heroCardBcbBuy').textContent  = 'Bs ' + (bcb.vrdBuy  || bcb.referentialBuy  || '9.79');
-      document.getElementById('heroCardBcbSell').textContent = 'Bs ' + (bcb.vrdSell || bcb.referentialSell || '10.00');
+      const tcoVal = bcb.tco || bcb.officialBuy || bcb.referentialBuy;
+      document.getElementById('heroCardBcbBuy').textContent  = 'Bs ' + (bcb.referentialBuy  || tcoVal || '—');
+      document.getElementById('heroCardBcbSell').textContent = 'Bs ' + (bcb.referentialSell || tcoVal || '—');
     }
     const now = new Date();
     document.getElementById('ratesTime').textContent = now.toLocaleDateString('es-BO') + ', ' + now.toLocaleTimeString('es-BO',{hour:'2-digit',minute:'2-digit'});
@@ -1140,16 +1181,40 @@
 
     // BCB
     if (bcb) {
-      document.getElementById('bcbOfficialBuy').textContent   = bcb.officialBuy    + ' Bs';
-      document.getElementById('bcbOfficialSell').textContent  = bcb.officialSell   + ' Bs';
-      document.getElementById('bcbRefBuy').textContent        = bcb.referentialBuy + ' Bs';
-      document.getElementById('bcbRefSell').textContent       = bcb.referentialSell+ ' Bs';
+      const tcoVal = bcb.tco || bcb.officialBuy;
+      document.getElementById('bcbOfficialBuy').textContent   = (bcb.officialBuy  || tcoVal || '—') + ' Bs';
+      document.getElementById('bcbOfficialSell').textContent  = (bcb.officialSell || tcoVal || '—') + ' Bs';
+      document.getElementById('bcbRefBuy').textContent        = (bcb.referentialBuy  || tcoVal || '—') + ' Bs';
+      document.getElementById('bcbRefSell').textContent       = (bcb.referentialSell || tcoVal || '—') + ' Bs';
       document.getElementById('bcbDate').textContent = 'Cotización: '+(displayDate||'')+' · Fuente: Banco Central de Bolivia';
-      document.getElementById('footerBcbBuy').textContent     = bcb.officialBuy    + ' Bs';
-      document.getElementById('footerBcbSell').textContent    = bcb.officialSell   + ' Bs';
-      document.getElementById('footerBcbRefBuy').textContent  = bcb.referentialBuy + ' Bs';
-      document.getElementById('footerBcbRefSell').textContent = bcb.referentialSell+ ' Bs';
+      document.getElementById('footerBcbBuy').textContent     = (tcoVal || '—') + ' Bs';
+      document.getElementById('footerBcbSell').textContent    = (tcoVal || '—') + ' Bs';
+      document.getElementById('footerBcbRefBuy').textContent  = (bcb.referentialBuy  || tcoVal || '—') + ' Bs';
+      document.getElementById('footerBcbRefSell').textContent = (bcb.referentialSell || tcoVal || '—') + ' Bs';
       document.getElementById('footerBcbDate').innerHTML = (displayDate||'')+'<br>Fuente: Banco Central de Bolivia';
+    }
+
+    // Pizarras bancarias
+    if (bancos && bancos.length) {
+      const tco = bcb?.tco || null;
+      if (tco) document.getElementById('bancosTcoVal').textContent = parseFloat(tco).toFixed(2);
+      document.getElementById('bancosGrid').innerHTML = bancos.map(b => {
+        const comp = b.compra != null ? parseFloat(b.compra).toFixed(2) : null;
+        const vent = b.venta  != null ? parseFloat(b.venta).toFixed(2)  : null;
+        return `<div class="banco-card">
+          <div class="banco-card-name" title="${b.nombre}">${b.nombre}</div>
+          <div class="banco-card-rates">
+            <div class="banco-rate-box">
+              <div class="banco-rate-label buy">Compra</div>
+              <div class="banco-rate-val ${comp ? 'buy' : 'na'}">${comp ? 'Bs ' + comp : '—'}</div>
+            </div>
+            <div class="banco-rate-box">
+              <div class="banco-rate-label sell">Venta</div>
+              <div class="banco-rate-val ${vent ? 'sell' : 'na'}">${vent ? 'Bs ' + vent : '—'}</div>
+            </div>
+          </div>
+        </div>`;
+      }).join('');
     }
 
     initCalc();

@@ -163,7 +163,7 @@ d_wallbit  = api_get("/v1/wallbit")
 d_airtm    = api_get("/v1/airtm")
 d_bybit    = api_get("/v1/p2p/bybit")
 d_saldoar  = api_get("/v1/saldoar")
-d_bcb_vrd  = api_get("/v1/referencial/bcb")
+d_bancos   = api_get("/v1/bancos")
 
 # El Dorado
 if d_eldorado and d_eldorado.get("buy") and d_eldorado.get("sell"):
@@ -207,51 +207,63 @@ else:
     saldoar_data = plat(round(buy_price*1.011,2), round(sell_price*0.988,2), "calculated")
 print(f"   SaldoAr    Compra: {saldoar_data['buy']} | Venta: {saldoar_data['sell']}  [{saldoar_data['source']}]")
 
-# ── BCB Oficial ────────────────────────────────────────────────────────────
-print("\n3. BCB Oficial...")
+# ── BCB / TCO (via /v1/bancos) ─────────────────────────────────────────────
+print("\n3. BCB TCO + Pizarras Bancarias...")
+tco_valor = None
+bancos_list = []
+
+if d_bancos:
+    tco_valor = d_bancos.get("tco", {}).get("valor")
+    bancos_list = d_bancos.get("bancos", [])
+    print(f"   TCO unificado: {tco_valor}")
+else:
+    print("   /v1/bancos no disponible")
+
 if d_official and d_official.get("official"):
-    off = d_official["official"]
+    off  = d_official["official"]
     blue = d_official.get("blue", {})
     bcb_data = {
+        "tco":             tco_valor or existing.get("bcb", {}).get("tco", 12.0),
         "officialBuy":     off["buy"],
         "officialSell":    off["sell"],
         "referentialBuy":  blue.get("buy",  buy_price),
         "referentialSell": blue.get("sell", sell_price),
-        "vrdBuy":  float(d_bcb_vrd["buy"])  if d_bcb_vrd and d_bcb_vrd.get("buy")  else 9.79,
-        "vrdSell": float(d_bcb_vrd["sell"]) if d_bcb_vrd and d_bcb_vrd.get("sell") else 10.0,
     }
 else:
     bcb_data = existing.get("bcb", {
-        "officialBuy": 6.86, "officialSell": 6.96,
-        "referentialBuy": 9.86, "referentialSell": 10.07
+        "tco": 12.0, "officialBuy": 12.0, "officialSell": 12.0,
+        "referentialBuy": buy_price, "referentialSell": sell_price
     })
-    # Actualizar VRD si está disponible aunque officialRate haya fallado
-    if d_bcb_vrd and d_bcb_vrd.get("buy"):
-        bcb_data["vrdBuy"]  = float(d_bcb_vrd["buy"])
-        bcb_data["vrdSell"] = float(d_bcb_vrd["sell"])
+    if tco_valor:
+        bcb_data["tco"] = tco_valor
 print(f"   Oficial  Compra: {bcb_data['officialBuy']} | Venta: {bcb_data['officialSell']}")
 
+# Construir lista de pizarras bancarias (solo bancos con pizarra vigente)
+bancos_data = []
+for b in bancos_list:
+    piz = b.get("pizarra", {})
+    if piz.get("estado") == "vigente":
+        bancos_data.append({
+            "id":      b["id"],
+            "nombre":  b["nombre"],
+            "web":     b.get("web"),
+            "compra":  piz.get("compra"),
+            "venta":   piz.get("venta"),
+            "fecha":   piz.get("fecha"),
+        })
+print(f"   Bancos con pizarra: {len(bancos_data)}")
+
 # ── BCB VRD ────────────────────────────────────────────────────────────────
-print("\n4. BCB VRD...")
+print("\n4. BCB VRD (scraping directo)...")
 vrd_data    = load_json("data/bcb_vrd.json")
 vrd_history = vrd_data.get("history", [])
 
-# Primero intenta la API de DolarBlueBolivia (ya tiene el scraping hecho)
-vrd_today = None
-if d_bcb_vrd and d_bcb_vrd.get("buy"):
-    vrd_today = float(d_bcb_vrd["buy"])
-    print(f"   BCB VRD (via DolarBlue API): {vrd_today}")
-else:
-    # Fallback: scraping directo de bcb.gob.bo
-    vrd_today = fetch_bcb_vrd_direct()
-    if vrd_today:
-        print(f"   BCB VRD (scraping directo): {vrd_today}")
-
-vrd_sell_today = float(d_bcb_vrd["sell"]) if d_bcb_vrd and d_bcb_vrd.get("sell") else None
+vrd_today = fetch_bcb_vrd_direct()
+vrd_sell_today = tco_valor  # TCO como referencia de venta oficial
 
 if vrd_today:
+    print(f"   BCB VRD (scraping directo): {vrd_today}")
     vrd_history = [h for h in vrd_history if h["date"] != today_str]
-    # Preservar min/max/n_trans si ya existen para hoy
     prev_today = next((h for h in vrd_data.get("history", []) if h["date"] == today_str), {})
     vrd_history.append({
         "date": today_str,
@@ -264,7 +276,7 @@ if vrd_today:
     vrd_history = sorted(vrd_history, key=lambda x: x["date"])
 else:
     print("   BCB VRD no disponible -> usando dato guardado")
-    vrd_today = vrd_data.get("vrd_today", 9.86)
+    vrd_today = vrd_data.get("vrd_today") or tco_valor or 12.0
 
 # ── Historial USDT ─────────────────────────────────────────────────────────
 history = existing.get("history", [])
@@ -284,6 +296,7 @@ save_json("data/prices.json", {
     "bybit":    bybit_data,
     "saldoar":  saldoar_data,
     "bcb":      bcb_data,
+    "bancos":   bancos_data,
     "history":  history,
 })
 print("\nprices.json guardado.")
@@ -293,7 +306,7 @@ save_json("data/bcb_vrd.json", {
     "lastUpdated":    datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
     "today":          today_str,
     "vrd_today":      vrd_today,
-    "vrd_sell_today": vrd_sell_today,
+    "tco_valor":      tco_valor,
     "vrd_min_today":  today_entry.get("min"),
     "vrd_max_today":  today_entry.get("max") or vrd_sell_today,
     "n_trans_today":  today_entry.get("n_trans") or None,
@@ -309,5 +322,7 @@ print(f"  Wallbit     : Compra {wallbit_data['buy']} | Venta {wallbit_data['sell
 print(f"  AirTM       : Compra {airtm_data['buy']} | Venta {airtm_data['sell']}  [{airtm_data['source']}]")
 print(f"  Bybit P2P   : Compra {bybit_data['buy']} | Venta {bybit_data['sell']}  [{bybit_data['source']}]")
 print(f"  SaldoAr     : Compra {saldoar_data['buy']} | Venta {saldoar_data['sell']}  [{saldoar_data['source']}]")
+print(f"  BCB TCO     : {bcb_data.get('tco')} (unificado)")
 print(f"  BCB Oficial : Compra {bcb_data['officialBuy']} | Venta {bcb_data['officialSell']}")
 print(f"  BCB VRD     : {vrd_today}")
+print(f"  Bancos pizarra: {len(bancos_data)}")
