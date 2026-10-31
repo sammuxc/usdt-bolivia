@@ -1,23 +1,23 @@
 {
-  "lastUpdated": "2026-10-31T13:59:01Z",
+  "lastUpdated": "2026-10-31T18:13:12Z",
   "displayDate": "sábado 31 de octubre, 2026",
   "binance": {
-    "buy": 11.98,
+    "buy": 11.97,
     "sell": 11.94,
     "available": true
   },
   "airtm": {
-    "buy": 11.93,
+    "buy": 11.92,
     "sell": 11.9,
     "available": true
   },
   "eldorado": {
-    "buy": 11.9,
+    "buy": 11.89,
     "sell": 11.87,
     "available": true
   },
   "takenos": {
-    "buy": 11.86,
+    "buy": 11.85,
     "sell": 11.83,
     "available": true
   },
@@ -325,7 +325,7 @@
     },
     {
       "date": "2026-10-31",
-      "buy": 11.98,
+      "buy": 11.97,
       "sell": 11.94
     }
   ]
