@@ -1,24 +1,24 @@
 {
-  "lastUpdated": "2026-11-05T00:11:31Z",
-  "displayDate": "miércoles 4 de noviembre, 2026",
+  "lastUpdated": "2026-11-05T07:30:05Z",
+  "displayDate": "jueves 5 de noviembre, 2026",
   "binance": {
-    "buy": 12.03,
-    "sell": 12.0,
+    "buy": 12.05,
+    "sell": 11.98,
     "available": true
   },
   "airtm": {
-    "buy": 11.98,
-    "sell": 11.96,
+    "buy": 12.0,
+    "sell": 11.94,
     "available": true
   },
   "eldorado": {
-    "buy": 11.95,
-    "sell": 11.93,
+    "buy": 11.97,
+    "sell": 11.91,
     "available": true
   },
   "takenos": {
-    "buy": 11.91,
-    "sell": 11.89,
+    "buy": 11.93,
+    "sell": 11.87,
     "available": true
   },
   "bcb": {
@@ -28,11 +28,6 @@
     "referentialSell": 9.86
   },
   "history": [
-    {
-      "date": "2026-09-06",
-      "buy": 12.46,
-      "sell": 12.43
-    },
     {
       "date": "2026-09-07",
       "buy": 12.54,
@@ -327,6 +322,11 @@
       "date": "2026-11-04",
       "buy": 12.03,
       "sell": 12.0
+    },
+    {
+      "date": "2026-11-05",
+      "buy": 12.05,
+      "sell": 11.98
     }
   ]
 }
